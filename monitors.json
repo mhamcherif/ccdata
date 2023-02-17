@@ -53,77 +53,97 @@
         {
             "name": "exchange-activity",
             "description": "This container checks the activity of the exchanges.",
-            "authors": "5 months ago"
+            "authors": []
         },
         {
             "name": "future-timestamps",
             "description": "This application monitors future timestamps.",
-            "authors": "last month"
+            "authors": []
         },
         {
             "name": "histo-min-csv",
             "description": "This module monitors the historical minute OHLCV (CSV) endpoint for all CCCAGG pairs for the previous 2 & 3 days.",
-            "authors": "3 months ago"
+            "authors": []
         },
         {
             "name": "historical-snapshot",
             "description": "This docker project mointors the snapshots saved to the poc or production system",
-            "authors": "2 months ago"
+            "authors": []
         },
         {
             "name": "historical-update",
             "description": "This docker project mointors the updates saved to the poc or production system",
-            "authors": "2 months ago"
+            "authors": []
         },
         {
             "name": "index-priority-pairs",
             "description": "This project aims to monitor Priority Pairs which are used in Indices",
-            "authors": "Suhayl"
+            "authors": [
+                "Suhayl"
+            ]
         },
         {
             "name": "index-qa-eod-files",
             "description": "Index EOD Monitoring - MVIS",
-            "authors": "Jimena"
+            "authors": [
+                "Jimena"
+            ]
         },
         {
             "name": "latest-news",
             "description": "This monitors latest news publication.",
-            "authors": "Mansour"
+            "authors": [
+                "Mansour"
+            ]
         },
         {
             "name": "node-support",
             "description": "This monitors and pulls data from the exchange dashboard.",
-            "authors": "Mansour"
+            "authors": [
+                "Mansour"
+            ]
         },
         {
             "name": "orderbook-vs-trade",
             "description": "This monitoring processes queries the cc api end-points for the latest trades and orderbook updates. Then compares their prices and flags any major descrepencies in a slack channel.",
-            "authors": "Jack"
+            "authors": [
+                "Jack"
+            ]
         },
         {
             "name": "outlier-bad-mapping",
             "description": "This monitor checks for outlier prices and/or possible bad mapping.",
-            "authors": "Mansour"
+            "authors": [
+                "Mansour"
+            ]
         },
         {
             "name": "raw-trade-vs-api",
             "description": "This module  compares raw trade files against API historical hour endpoint",
-            "authors": "Mansour"
+            "authors": [
+                "Mansour"
+            ]
         },
         {
             "name": "stale",
             "description": "This monitors exchanges to see if any of the pair data is stale.",
-            "authors": "Suhayl"
+            "authors": [
+                "Suhayl"
+            ]
         },
         {
             "name": "v2-exchange-volume",
             "description": "This monitors/compares V2/V1 exchange volumes.",
-            "authors": "Mansour"
+            "authors": [
+                "Mansour"
+            ]
         },
         {
             "name": "volume",
             "description": "Checks to see if the volume of any exchange is off.",
-            "authors": "Alex"
+            "authors": [
+                "Alex"
+            ]
         }
     ]
 }
