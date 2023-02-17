@@ -1,5 +1,14 @@
+body {
+    background-color: #00D665;
+}
+
 table,
-th,
-td {
+td,
+th {
     border: 1px solid;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
