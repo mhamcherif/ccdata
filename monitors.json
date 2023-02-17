@@ -3,6 +3,8 @@
         {
             "name": "3iq",
             "description": "This monitors the difference between trade and orderbook for exchange/pairs used for 3iq.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Jack"
             ]
@@ -10,6 +12,8 @@
         {
             "name": "blob-vs-api",
             "description": "This monitors the difference between trades between blobs and the api",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Jimena"
             ]
@@ -17,6 +21,8 @@
         {
             "name": "blockchain-data",
             "description": "This checks blockchain data.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Jack"
             ]
@@ -24,6 +30,8 @@
         {
             "name": "cccaggvalidation",
             "description": "CCCAGG Validation Monitoring",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Jimena",
                 "Suhayl"
@@ -32,6 +40,8 @@
         {
             "name": "db-maintenance",
             "description": "This container will backup and maintain the postgres databases",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Suhayl"
             ]
@@ -39,6 +49,8 @@
         {
             "name": "dbDemo",
             "description": "Postgres demo project",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Suhayl"
             ]
@@ -46,6 +58,8 @@
         {
             "name": "demo",
             "description": "The point of this docker project is to be copied to make adding new monitroing scripts to kubernetes easy.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Suhayl"
             ]
@@ -53,31 +67,54 @@
         {
             "name": "exchange-activity",
             "description": "This container checks the activity of the exchanges.",
-            "authors": []
+            "slack": "",
+            "frequency": "",
+            "authors": [
+                "Alex"
+            ]
         },
         {
             "name": "future-timestamps",
             "description": "This application monitors future timestamps.",
-            "authors": []
+            "slack": "",
+            "frequency": "",
+            "authors": [
+                "Suhayl",
+                "Alex"
+            ]
         },
         {
             "name": "histo-min-csv",
             "description": "This module monitors the historical minute OHLCV (CSV) endpoint for all CCCAGG pairs for the previous 2 & 3 days.",
-            "authors": []
+            "slack": "",
+            "frequency": "",
+            "authors": [
+                "Mansour"
+            ]
         },
         {
             "name": "historical-snapshot",
             "description": "This docker project mointors the snapshots saved to the poc or production system",
-            "authors": []
+            "slack": "",
+            "frequency": "",
+            "authors": [
+                "Alex"
+            ]
         },
         {
             "name": "historical-update",
             "description": "This docker project mointors the updates saved to the poc or production system",
-            "authors": []
+            "slack": "",
+            "frequency": "",
+            "authors": [
+                "Alex"
+            ]
         },
         {
             "name": "index-priority-pairs",
             "description": "This project aims to monitor Priority Pairs which are used in Indices",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Suhayl"
             ]
@@ -85,6 +122,8 @@
         {
             "name": "index-qa-eod-files",
             "description": "Index EOD Monitoring - MVIS",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Jimena"
             ]
@@ -92,6 +131,8 @@
         {
             "name": "latest-news",
             "description": "This monitors latest news publication.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Mansour"
             ]
@@ -106,6 +147,8 @@
         {
             "name": "orderbook-vs-trade",
             "description": "This monitoring processes queries the cc api end-points for the latest trades and orderbook updates. Then compares their prices and flags any major descrepencies in a slack channel.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Jack"
             ]
@@ -113,6 +156,8 @@
         {
             "name": "outlier-bad-mapping",
             "description": "This monitor checks for outlier prices and/or possible bad mapping.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Mansour"
             ]
@@ -120,6 +165,8 @@
         {
             "name": "raw-trade-vs-api",
             "description": "This module  compares raw trade files against API historical hour endpoint",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Mansour"
             ]
@@ -127,6 +174,8 @@
         {
             "name": "stale",
             "description": "This monitors exchanges to see if any of the pair data is stale.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Suhayl"
             ]
@@ -134,6 +183,8 @@
         {
             "name": "v2-exchange-volume",
             "description": "This monitors/compares V2/V1 exchange volumes.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Mansour"
             ]
@@ -141,6 +192,8 @@
         {
             "name": "volume",
             "description": "Checks to see if the volume of any exchange is off.",
+            "slack": "",
+            "frequency": "",
             "authors": [
                 "Alex"
             ]
