@@ -32,6 +32,12 @@
                     const descriptionCell = document.createElement('td');
                     descriptionCell.textContent = monitor.description;
                     row.appendChild(descriptionCell);
+                    const slackCell = document.createElement('td');
+                    slackCell.textContent = monitor.slack;
+                    row.appendChild(slackCell);
+                    const scheduleCell = document.createElement('td');
+                    scheduleCell.textContent = monitor.schedule;
+                    row.appendChild(scheduleCell);
                     const authorsCell = document.createElement('td');
                     authorsCell.textContent = monitor.authors.join(', ');
                     row.appendChild(authorsCell);
