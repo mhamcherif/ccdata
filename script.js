@@ -1,4 +1,6 @@
-fetch('./monitors.json')
+// TODO: Add link to slack channel -> https://cryptocompare.slack.com/archives/<slack_channel_id>
+// Or even better https://cryptocompare.slack.com/archives/<slack_channel_name>
+fetch('monitors.json')
     .then(response => response.json())
     .then(data => {
         const monitorsTableBody = document.getElementById('monitorsTableBody');
@@ -11,7 +13,10 @@ fetch('./monitors.json')
             descriptionCell.textContent = monitor.description;
             row.appendChild(descriptionCell);
             const slackCell = document.createElement('td');
-            slackCell.textContent = monitor.slack;
+            const slackLink = document.createElement('a');
+            slackLink.href = `https://cryptocompare.slack.com/archives/${monitor.slack}`;
+            slackLink.textContent = monitor.slack;
+            slackCell.appendChild(slackLink);
             row.appendChild(slackCell);
             const scheduleCell = document.createElement('td');
             scheduleCell.textContent = monitor.schedule;
@@ -22,3 +27,4 @@ fetch('./monitors.json')
             monitorsTableBody.appendChild(row);
         });
     });
+
