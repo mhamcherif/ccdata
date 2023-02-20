@@ -2,8 +2,8 @@
     "monitors": [
         {
             "name": "3iq",
-            "description": "This monitors the difference between trade and orderbook for exchange/pairs used for 3iq.",
-            "slack": "BESPOKE_INDEX_MONITORING_WEBHOOK",
+            "description": "The difference between trade and orderbook for exchange/pairs used for 3iq.",
+            "slack": "bespoke-index-monitoring",
             "schedule": "5,15,25,35,45,55 * * * *",
             "authors": [
                 "Jack"
@@ -11,8 +11,8 @@
         },
         {
             "name": "blob-vs-api",
-            "description": "This monitors the difference between trades between blobs and the api",
-            "slack": "",
+            "description": "The difference between trades between blobs and the api",
+            "slack": "blobs_vs_api_validation",
             "schedule": "",
             "authors": [
                 "Jimena"
@@ -20,8 +20,8 @@
         },
         {
             "name": "blockchain-data",
-            "description": "This checks blockchain data.",
-            "slack": "FTW_TRACKINSIGHT_WEBHOOK",
+            "description": "Monitors blockchain data.",
+            "slack": "cryptocompare-ftw-trackinsight-monitoring",
             "schedule": "50 11 * * *",
             "authors": [
                 "Jack"
@@ -29,7 +29,7 @@
         },
         {
             "name": "cccaggvalidation",
-            "description": "CCCAGG Validation Monitoring",
+            "description": "CCCAGG Validation",
             "slack": "cccagg_validation",
             "schedule": "",
             "authors": [
@@ -39,25 +39,7 @@
         },
         {
             "name": "db-maintenance",
-            "description": "This container will backup and maintain the postgres databases",
-            "slack": "",
-            "schedule": "",
-            "authors": [
-                "Suhayl"
-            ]
-        },
-        {
-            "name": "dbDemo",
-            "description": "Postgres demo project",
-            "slack": "",
-            "schedule": "",
-            "authors": [
-                "Suhayl"
-            ]
-        },
-        {
-            "name": "demo",
-            "description": "The point of this docker project is to be copied to make adding new monitroing scripts to kubernetes easy.",
+            "description": "Backup and maintain the postgres databases",
             "slack": "",
             "schedule": "",
             "authors": [
@@ -75,7 +57,7 @@
         },
         {
             "name": "future-timestamps",
-            "description": "This application monitors future timestamps.",
+            "description": "Monitors future timestamps.",
             "slack": "",
             "schedule": "",
             "authors": [
@@ -85,25 +67,25 @@
         },
         {
             "name": "histo-min-csv",
-            "description": "This module monitors the historical minute OHLCV (CSV) endpoint for all CCCAGG pairs for the previous 2 & 3 days.",
-            "slack": "",
-            "schedule": "",
+            "description": "Monitors the historical minute OHLCV (CSV) endpoint for all CCCAGG pairs.",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "15 15 * * *",
             "authors": [
                 "Mansour"
             ]
         },
         {
             "name": "historical-snapshot",
-            "description": "This docker project mointors the snapshots saved to the poc or production system",
+            "description": "Mointors the snapshots saved to the poc or production system",
             "slack": "",
-            "schedule": "",
+            "schedule": "0 6 * * *",
             "authors": [
                 "Alex"
             ]
         },
         {
             "name": "historical-update",
-            "description": "This docker project mointors the updates saved to the poc or production system",
+            "description": "Mointors the updates saved to the stage/poc or production system",
             "slack": "MONITORING_ORDER_BOOK_WEBHOOK",
             "schedule": "0 6 * * *",
             "authors": [
@@ -112,7 +94,7 @@
         },
         {
             "name": "index-priority-pairs",
-            "description": "This project aims to monitor Priority Pairs which are used in Indices",
+            "description": "Monitors Priority Pairs which are used in Indices",
             "slack": "",
             "schedule": "",
             "authors": [
@@ -121,7 +103,7 @@
         },
         {
             "name": "index-qa-eod-files",
-            "description": "Index EOD Monitoring - MVIS",
+            "description": "Monitors Index EOD - MVIS",
             "slack": "",
             "schedule": "",
             "authors": [
@@ -130,16 +112,18 @@
         },
         {
             "name": "latest-news",
-            "description": "This monitors latest news publication.",
-            "slack": "",
-            "schedule": "",
+            "description": "Latest news publication.",
+            "slack": "news-monitoring",
+            "schedule": "40 * * * *",
             "authors": [
                 "Mansour"
             ]
         },
         {
             "name": "node-support",
-            "description": "This monitors and pulls data from the exchange dashboard.",
+            "description": "Monitors nodes health and trading (using exchange dashboard).",
+            "slack": "24-hour-node-support",
+            "schedule": "45 */2 * * *",
             "authors": [
                 "Mansour"
             ]
@@ -154,10 +138,20 @@
             ]
         },
         {
+            "name": "volume/exchange-activity",
+            "description": "Checks to see if the volume of any exchange is off.",
+            "slack": "exchange_monitoring",
+            "schedule": "30 * * * *",
+            "authors": [
+                "Suhayl",
+                "Alex"
+            ]
+        },
+        {
             "name": "outlier-bad-mapping",
             "description": "This monitor checks for outlier prices and/or possible bad mapping.",
-            "slack": "",
-            "schedule": "",
+            "slack": "outliers-and-bad-mappings",
+            "schedule": "0 6 * * *",
             "authors": [
                 "Mansour"
             ]
@@ -173,8 +167,8 @@
         },
         {
             "name": "stale",
-            "description": "This monitors exchanges to see if any of the pair data is stale.",
-            "slack": "STALE_PAIRS_MONITORING_WEBHOOK",
+            "description": "Monitors exchanges trading to check for stale pairs",
+            "slack": "stale-pairs-monitoring",
             "schedule": "0 11 * * *",
             "authors": [
                 "Suhayl"
@@ -182,20 +176,20 @@
         },
         {
             "name": "v2-exchange-volume",
-            "description": "This monitors/compares V2/V1 exchange volumes.",
-            "slack": "C04MD8Y2JVA",
-            "schedule": "00 8 * * *",
+            "description": "Compares V2/V1 exchange volumes.",
+            "slack": "qa-v2-exchange-volumes",
+            "schedule": "0 8 * * *",
             "authors": [
                 "Mansour"
             ]
         },
         {
-            "name": "volume",
-            "description": "Checks to see if the volume of any exchange is off.",
-            "slack": "",
-            "schedule": "",
+            "name": "v2-unmapped-instruments",
+            "description": "Checks V2 unmapped instruments.",
+            "slack": "qa-v2-unmapped-instruments",
+            "schedule": "30 6 * * *",
             "authors": [
-                "Alex"
+                "Mansour"
             ]
         }
     ]
