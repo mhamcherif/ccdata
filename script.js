@@ -1,5 +1,8 @@
-// TODO: Add link to slack channel -> https://cryptocompare.slack.com/archives/<slack_channel_id>
+// DONE: Add link to slack channel -> https://cryptocompare.slack.com/archives/<slack_channel_id>
 // Or even better https://cryptocompare.slack.com/archives/<slack_channel_name>
+
+// TODO: Add link to argocd -> https://argocd.prod.epic-robot.club/applications/<app_name>
+// e.g. https://argocd.prod.epic-robot.club/applications/qa-orderbook-vs-trade
 fetch('monitors.json')
     .then(response => response.json())
     .then(data => {

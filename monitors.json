@@ -58,8 +58,8 @@
         {
             "name": "future-timestamps",
             "description": "Monitors future timestamps.",
-            "slack": "",
-            "schedule": "",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "15 * * * *",
             "authors": [
                 "Suhayl",
                 "Alex"
@@ -77,8 +77,8 @@
         {
             "name": "historical-snapshot",
             "description": "Mointors the snapshots saved to the poc or production system",
-            "slack": "",
-            "schedule": "0 6 * * *",
+            "slack": "production-ob-histosnapshot-monitoring",
+            "schedule": "0 4 * * *",
             "authors": [
                 "Alex"
             ]
@@ -86,7 +86,7 @@
         {
             "name": "historical-update",
             "description": "Mointors the updates saved to the stage/poc or production system",
-            "slack": "MONITORING_ORDER_BOOK_WEBHOOK",
+            "slack": "",
             "schedule": "0 6 * * *",
             "authors": [
                 "Alex"
@@ -95,10 +95,11 @@
         {
             "name": "index-priority-pairs",
             "description": "Monitors Priority Pairs which are used in Indices",
-            "slack": "",
-            "schedule": "",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "*/20 * * * *",
             "authors": [
-                "Suhayl"
+                "Suhayl",
+                "Alex"
             ]
         },
         {
@@ -131,8 +132,8 @@
         {
             "name": "orderbook-vs-trade",
             "description": "This monitoring processes queries the cc api end-points for the latest trades and orderbook updates. Then compares their prices and flags any major descrepencies in a slack channel.",
-            "slack": "",
-            "schedule": "",
+            "slack": "ob-vs-trade-monitoring",
+            "schedule": "10 10 * * *",
             "authors": [
                 "Jack"
             ]
