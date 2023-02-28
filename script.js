@@ -7,12 +7,14 @@ function check_cccagg_pair() {
         .then(response => response.json())
         .then(response => {
             if (Object.keys(response.Data).length === 0) {
-                document.getElementById("result").innerHTML = '<span style="color:orange">${fsym} is not currently included in CCCAGG.</span>';
+                document.getElementById("result").innerHTML = `<span style="color:red">&#x2718; ${fsym} is not currently included in CCCAGG.</span>`;
             } else {
                 if (tsyms.length === 0) {
+                    console.info(tsyms);
                     document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym} is included in CCCAGG.</span>`;
                 } else {
                     const pairs = [];
+                    console.info(tsyms);
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             pairs.push(`<span style="color:green">&#x2714; ${fsym}/${tsym}</span>`);
