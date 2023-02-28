@@ -9,7 +9,7 @@ function check_cccagg_pair() {
             if (Object.keys(response.Data).length === 0) {
                 document.getElementById("result").innerHTML = `<span style="color:red">&#x2718; ${fsym} is not currently included in CCCAGG.</span>`;
             } else {
-                if (tsyms.length === 0) {
+                if (tsyms.join("") === "") {
                     console.info(tsyms);
                     document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym} is included in CCCAGG.</span>`;
                 } else {
