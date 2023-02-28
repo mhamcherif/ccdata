@@ -7,7 +7,7 @@ function check_cccagg_pair() {
         .then(response => response.json())
         .then(response => {
             if (Object.keys(response.Data).length === 0) {
-                alert(`The symbol ${fsym} is not included in cccagg.`);
+                document.getElementById("result").innerHTML = '<span style="color:orange">${fsym} is not currently included in CCCAGG.</span>';
             } else {
                 const pairs = [];
                 for (const tsym of tsyms) {
