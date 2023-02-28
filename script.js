@@ -9,20 +9,23 @@ function check_cccagg_pair() {
             if (Object.keys(response.Data).length === 0) {
                 document.getElementById("result").innerHTML = '<span style="color:orange">${fsym} is not currently included in CCCAGG.</span>';
             } else {
-                const pairs = [];
-                for (const tsym of tsyms) {
-                    if (tsym in response.Data.tsyms) {
-                        pairs.push(`<span style="color:green">&#x2714; ${fsym}/${tsym}</span>`);
-                    } else {
-                        pairs.push(`<span style="color:red">&#x2718; ${fsym}/${tsym}</span>`);
+                if (tsyms.length === 0) {
+                    document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym} is included in CCCAGG.</span>`;
+                } else {
+                    const pairs = [];
+                    for (const tsym of tsyms) {
+                        if (tsym in response.Data.tsyms) {
+                            pairs.push(`<span style="color:green">&#x2714; ${fsym}/${tsym}</span>`);
+                        } else {
+                            pairs.push(`<span style="color:red">&#x2718; ${fsym}/${tsym}</span>`);
+                        }
                     }
+                    document.getElementById("result").innerHTML = pairs.join("<br>");
                 }
-                document.getElementById("result").innerHTML = pairs.join("<br>");
-            };
+            }
         })
         .catch(error => {
             console.error(error);
             document.getElementById("result").innerHTML = '<span style="color:red">An error occurred while processing your request.</span>';
         });
 }
-
