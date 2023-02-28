@@ -1,23 +1,36 @@
 function check_cccagg_pair() {
     const fsym = document.getElementById("fsym").value.toUpperCase();
-    const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
-    const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
+    const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",");
 
-    fetch(url)
+    fetch(`https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`)
         .then(response => response.json())
-        .then(data => {
-            const pairs = [];
-            for (const tsym of tsyms) {
-                if (tsym in data.Data.tsyms) {
-                    pairs.push(`<span style="color:green">&#x2714; ${fsym}/${tsym}</span>`);
-                } else {
-                    pairs.push(`<span style="color:red">&#x2718; ${fsym}/${tsym}</span>`);
-                }
+        .then(response => {
+            if (Object.keys(response.Data).length === 0) {
+                alert(`The symbol ${fsym} is not included in cccagg.`);
+            } else {
+                tsyms.forEach(tsym => {
+                    fetch(`https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`)
+                        .then(response => response.json())
+                        .then(response => {
+                            const result = document.createElement("li");
+                            if (Object.keys(response.Data).length === 0) {
+                                result.innerText = `${fsym}/${tsym} ❌`;
+                                result.classList.add("red");
+                            } else {
+                                result.innerText = `${fsym}/${tsym} ✅`;
+                                result.classList.add("green");
+                            }
+                            document.getElementById("results").appendChild(result);
+                        })
+                        .catch(error => {
+                            alert("An error occurred while processing your request.");
+                            console.error(error);
+                        });
+                });
             }
-            document.getElementById("result").innerHTML = pairs.join("<br>");
         })
         .catch(error => {
+            alert("An error occurred while processing your request.");
             console.error(error);
-            document.getElementById("result").innerHTML = '<span style="color:red">An error occurred while processing your request.</span>';
         });
 }
