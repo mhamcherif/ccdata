@@ -1,7 +1,7 @@
 function check_cccagg_pair() {
     const fsym = document.getElementById("fsym").value.toUpperCase();
     const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
-    const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}}`;
+    const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
 
     fetch(url)
         .then(response => response.json())
