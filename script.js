@@ -1,16 +1,20 @@
 function check_cccagg_pair() {
     const fsym = document.getElementById("fsym").value.toUpperCase();
-    const tsyms = document.getElementById("tsyms").value.toUpperCase() || "BTC"; // Default value is BTC if tsyms is not provided
-    const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}&tsyms=${tsyms}`;
+    const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
+    const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}&tsyms=${tsyms.join(",")}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            if (tsyms.split(",").every(tsym => tsym in data.Data.tsyms)) {
-                document.getElementById("result").innerHTML = `${fsym}/${tsyms} is a cccagg pair.`;
-            } else {
-                document.getElementById("result").innerHTML = `${fsym}/${tsyms} is not a cccagg pair.`;
+            const pairs = [];
+            for (const tsym of tsyms) {
+                if (tsym in data.Data.tsyms) {
+                    pairs.push(`${fsym}/${tsym} is a cccagg pair.`);
+                } else {
+                    pairs.push(`${fsym}/${tsym} is not a cccagg pair.`);
+                }
             }
+            document.getElementById("result").innerHTML = pairs.join("<br>");
         })
         .catch(error => {
             console.error(error);
