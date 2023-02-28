@@ -6,7 +6,7 @@ function check_cccagg_pair() {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            if (tsyms.split(",").every(tsym => tsym in data.Data.tsyms[fsym])) {
+            if (tsyms.split(",").every(tsym => tsym in data.Data.tsyms)) {
                 document.getElementById("result").innerHTML = `${fsym}/${tsyms} is a cccagg pair.`;
             } else {
                 document.getElementById("result").innerHTML = `${fsym}/${tsyms} is not a cccagg pair.`;
