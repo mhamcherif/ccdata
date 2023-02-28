@@ -7,27 +7,25 @@ function check_cccagg_pair() {
         .then(response => response.json())
         .then(response => {
             if (Object.keys(response.Data).length === 0) {
-                document.getElementById("result").innerHTML = `<span style="color:red">&#x2718; ${fsym} is not currently included in CCCAGG.</span>`;
+                document.getElementById("result").innerHTML = `<div class="alert alert-warning" role="alert">${fsym} is not currently included in CCCAGG.</div>`;
             } else {
-                if (tsyms.join("") === "") {
-                    console.info(tsyms);
-                    document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym} is included in CCCAGG.</span>`;
-                } else {
-                    const pairs = [];
-                    console.info(tsyms);
-                    for (const tsym of tsyms) {
-                        if (tsym in response.Data.tsyms) {
-                            pairs.push(`<span style="color:green">&#x2714; ${fsym}/${tsym}</span>`);
-                        } else {
-                            pairs.push(`<span style="color:red">&#x2718; ${fsym}/${tsym}</span>`);
-                        }
+                const pairs = [];
+                for (const tsym of tsyms) {
+                    if (tsym in response.Data.tsyms) {
+                        pairs.push(`<span class="text-success">&#x2714; ${fsym}/${tsym}</span>`);
+                    } else {
+                        pairs.push(`<span class="text-danger">&#x2718; ${fsym}/${tsym}</span>`);
                     }
+                }
+                if (pairs.length === 0) {
+                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym} is included in CCCAGG.</div>`;
+                } else {
                     document.getElementById("result").innerHTML = pairs.join("<br>");
                 }
             }
         })
         .catch(error => {
             console.error(error);
-            document.getElementById("result").innerHTML = '<span style="color:red">An error occurred while processing your request.</span>';
+            document.getElementById("result").innerHTML = `<div class="alert alert-danger" role="alert">An error occurred while processing your request.</div>`;
         });
 }
