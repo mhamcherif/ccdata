@@ -11,23 +11,31 @@ function check_cccagg_pair() {
             } else {
                 if (tsyms.join("") === "") {
                     const resp_tsyms = response.Data.tsyms;
-                    const pairs = [];
-                    for (const tsym in resp_tsyms) {
-                        const exchanges = Object.keys(resp_tsyms[tsym].exchanges).join(", ");
-                        pairs.push(`${fsym}-${tsym} (${exchanges})`);
-                    }
-                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym}: [${pairs.join(", ")}]</div>`;
+                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym}: [${Object.keys(resp_tsyms).join(", ")}]</div>`;
                 } else {
                     const pairs = [];
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
-                            pairs.push(`<span style="color:green">&#x2714; ${fsym}-${tsym} (${exchanges})</span>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>${exchanges}</td></tr>`);
                         } else {
-                            pairs.push(`<span style="color:red">&#x2718; ${fsym}-${tsym}</span>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>Not available</td></tr>`);
                         }
                     }
-                    document.getElementById("result").innerHTML = pairs.join("<br>");
+                    const table = `
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Pair</th>
+                                    <th>Exchanges</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${pairs.join("")}
+                            </tbody>
+                        </table>
+                    `;
+                    document.getElementById("result").innerHTML = table;
                 }
             }
         })
