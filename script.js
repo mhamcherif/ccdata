@@ -60,12 +60,12 @@ function check_cccagg_pair() {
                                 </tr>
                             </thead>
                             <tbody>
-                                ${pairs.join("")}
+                                ${pairs.join()}
                             </tbody>
                         </table>
                     `;
                     console.info(pairs)
-                    console.info(pairs.join(""))
+                    console.info(pairs.join())
                     document.getElementById("result").innerHTML = table;
                 }
             }
