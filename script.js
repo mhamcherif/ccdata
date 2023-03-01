@@ -50,6 +50,12 @@ function check_cccagg_pair() {
                     }
                     console.info(pairs)
                     console.info(pairs.join(""))
+                    // Troubleshooting
+                    for (let i = 0; i < pairs.length; i++) {
+                        newPairs += pairs[i];
+                        //if (i < pairs.length - 1) newpairs += separator;
+                    }
+                    console.log(newpairs);
                     const table = `
                         <table class="table table-striped">
                             <thead>
