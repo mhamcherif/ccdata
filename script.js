@@ -11,7 +11,7 @@ function check_cccagg_pair() {
             } else {
                 if (tsyms.join("") === "") {
                     console.info(tsyms);
-                    document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym} is included in CCCAGG.</span>`;
+                    document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym}: [${Object.keys(response.Data.tsyms).join(", ")}]</span>`;
                 } else {
                     const pairs = [];
                     console.info(tsyms);
