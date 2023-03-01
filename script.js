@@ -43,9 +43,10 @@ function check_cccagg_pair() {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${exchanges}</td></tr>`);
                         } else {
-                            get_exchanges(fsym, tsym, function (exchanges) {
-                                pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${exchanges.join(', ')}</td></tr>`);
-                            });
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td></tr>`
+                            // get_exchanges(fsym, tsym, function (exchanges) {
+                            //     pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${exchanges.join(', ')}</td></tr>`);
+                            // });
                         }
                     }
                     console.info(pairs)
