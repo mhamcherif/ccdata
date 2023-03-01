@@ -25,22 +25,26 @@
     <p id="result"></p>
     -->
     <!-- Improved snippet -->
-    <div class="form-group">
-        <label for="fsym">From Symbol</label>
-        <input type="text" class="form-control" id="fsym" required>
+    <div class="container">
+        <h2>Check CCCAGG Pair</h2>
+        <div class="form-group">
+            <label for="fsym">From Symbol</label>
+            <input type="text" class="form-control" id="fsym" required>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="tsyms">To Symbol(s)</label>
+            <input type="text" class="form-control" id="tsyms" placeholder="Enter comma-separated symbols">
+        </div>
+        <br>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="check_cccagg_pair()">Check</button>
+            <button type="button" class="btn btn-secondary" onclick="clear_result()">Clear</button>
+        </div>
+        <br><br>
+        <div id="result"></div>
     </div>
-    <br>
-    <div class="form-group">
-        <label for="tsyms">To Symbol(s)</label>
-        <input type="text" class="form-control" id="tsyms" placeholder="Enter comma-separated symbols">
-    </div>
-    <br>
-    <div class="form-group">
-        <button type="button" class="btn btn-primary" onclick="check_cccagg_pair()">Check</button>
-        <button type="button" class="btn btn-secondary" onclick="clear_result()">Clear</button>
-    </div>
-    <br><br>
-    <div id="result"></div>
+
     <!-- Script -->
     <script src="script.js"></script>
     <!-- Bootstrap JavaScript -->

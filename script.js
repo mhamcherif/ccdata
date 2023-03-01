@@ -7,11 +7,11 @@ function check_cccagg_pair() {
         .then(response => response.json())
         .then(response => {
             if (Object.keys(response.Data).length === 0) {
-                document.getElementById("result").innerHTML = `<span style="color:red">&#x2718; ${fsym} is not currently included in CCCAGG.</span>`;
+                document.getElementById("result").innerHTML = `<div class="alert alert-warning" role="alert">${fsym} is not currently included in CCCAGG.</div>`;
             } else {
                 if (tsyms.join("") === "") {
                     console.info(tsyms);
-                    document.getElementById("result").innerHTML = `<span style="color:green">&#x2714; ${fsym}: [${Object.keys(response.Data.tsyms).join(", ")}]</span>`;
+                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym}: [${Object.keys(response.Data.tsyms).join(", ")}]</div>`;
                 } else {
                     const pairs = [];
                     console.info(tsyms);
@@ -28,7 +28,7 @@ function check_cccagg_pair() {
         })
         .catch(error => {
             console.error(error);
-            document.getElementById("result").innerHTML = '<span style="color:red">An error occurred while processing your request.</span>';
+            document.getElementById("result").innerHTML = `<div class="alert alert-danger" role="alert">An error occurred while processing your request.</div>`;
         });
 }
 
