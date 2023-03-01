@@ -41,9 +41,9 @@ function check_cccagg_pair() {
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2714;</td><td>${exchanges}</td></tr>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${exchanges}</td></tr>`);
                         } else {
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2718;</td><td>Not available</td></tr>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td></tr>`);
                         }
                     }
                     const table = `
