@@ -54,8 +54,8 @@ function check_cccagg_pair() {
                     for (let i = 0; i < pairs.length; i++) {
                         newPairs += pairs[i];
                         //if (i < pairs.length - 1) newpairs += separator;
-                    }
-                    console.log(newpairs);
+                    };
+                    console.log(newPairs);
                     const table = `
                         <table class="table table-striped">
                             <thead>
