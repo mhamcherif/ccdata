@@ -47,8 +47,9 @@ function check_cccagg_pair() {
                                 pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${exchanges}</td></tr>`); //exchanges.join(', ')
                             });
                         }
-                        console.info(pairs)
                     }
+                    console.info(pairs)
+                    console.info(pairs.join(""))
                     const table = `
                         <table class="table table-striped">
                             <thead>
