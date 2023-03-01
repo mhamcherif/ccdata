@@ -11,7 +11,31 @@ function check_cccagg_pair() {
             } else {
                 if (tsyms.join("") === "") {
                     const resp_tsyms = response.Data.tsyms;
-                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym}: [${Object.keys(resp_tsyms).join(", ")}]</div>`;
+                    let table = `<table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>Pair</th>
+                                      <th>Exchanges</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>`;
+
+                    for (const tsym in resp_tsyms) {
+                        const exchanges = [];
+                        for (const exchange in resp_tsyms[tsym].exchanges) {
+                            if (resp_tsyms[tsym].exchanges[exchange].isActive) {
+                                exchanges.push(exchange);
+                            }
+                        }
+                        const exchangeStr = exchanges.join(", ");
+                        table += `<tr>
+                                  <td>${fsym}-${tsym}</td>
+                                  <td>${exchangeStr}</td>
+                                </tr>`;
+                    }
+
+                    table += `</tbody></table>`;
+                    document.getElementById("result").innerHTML = table;
                 } else {
                     const pairs = [];
                     for (const tsym of tsyms) {
