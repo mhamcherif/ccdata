@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    <!--
     <h1>Check CCCAGG Pair</h1>
     <label for="fsym">Enter a symbol:</label>
     <input type="text" id="fsym" name="fsym" required><br><br>
@@ -23,6 +24,21 @@
     <input type="text" id="tsyms" name="tsyms"><br><br>
     <button onclick="check_cccagg_pair()">Submit</button>
     <p id="result"></p>
+    -->
+    <!-- Improved snippet -->
+    <div class="form-group">
+        <label for="fsym">From Symbol</label>
+        <input type="text" class="form-control" id="fsym" required>
+    </div>
+    <div class="form-group">
+        <label for="tsyms">To Symbol(s)</label>
+        <input type="text" class="form-control" id="tsyms" placeholder="Enter comma-separated symbols">
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="check_cccagg_pair()">Check</button>
+        <button type="button" class="btn btn-secondary" onclick="clear_result()">Clear</button>
+    </div>
+    <div id="result"></div>
     <!-- Script -->
     <script src="script.js"></script>
     <!-- Bootstrap JavaScript -->

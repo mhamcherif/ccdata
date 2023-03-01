@@ -31,3 +31,7 @@ function check_cccagg_pair() {
             document.getElementById("result").innerHTML = '<span style="color:red">An error occurred while processing your request.</span>';
         });
 }
+
+function clear_result() {
+    document.getElementById("result").innerHTML = "";
+}
