@@ -51,12 +51,21 @@ function check_cccagg_pair() {
                     console.info(pairs)
                     console.info(pairs.join("\n"))
                     // Troubleshooting
-                    let newPairs = []
+                    // Method 1: Using the join() method
+                    const joinedString1 = pairs.join("");
+                    console.info(joinedString1);
+
+                    // Method 2: Using a for loop
+                    let joinedString2 = "";
                     for (let i = 0; i < pairs.length; i++) {
-                        newPairs += pairs[i];
-                        if (i < pairs.length - 1) newPairs += "\n";
+                        joinedString2 += pairs[i];
                     }
-                    console.info(newPairs)
+                    console.info(joinedString2);
+
+                    // Method 3: Using the reduce() method
+                    const joinedString3 = pairs.reduce((acc, curr) => acc + curr, "");
+                    console.info(joinedString3);
+                    // End Troubleshooting
                     const table = `
                         <table class="table table-striped">
                             <thead>
