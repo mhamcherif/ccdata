@@ -41,9 +41,9 @@ function check_cccagg_pair() {
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>${exchanges}</td></tr>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2714;</td><td>${exchanges}</td></tr>`);
                         } else {
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>Not available</td></tr>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2718;</td><td>Not available</td></tr>`);
                         }
                     }
                     const table = `
@@ -51,6 +51,7 @@ function check_cccagg_pair() {
                             <thead>
                                 <tr>
                                     <th>Pair</th>
+                                    <th>Included</th>
                                     <th>Exchanges</th>
                                 </tr>
                             </thead>
@@ -67,4 +68,8 @@ function check_cccagg_pair() {
             console.error(error);
             document.getElementById("result").innerHTML = `<div class="alert alert-danger" role="alert">An error occurred while processing your request.</div>`;
         });
+}
+
+function clear_result() {
+    document.getElementById("result").innerHTML = "";
 }
