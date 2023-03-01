@@ -10,16 +10,21 @@ function check_cccagg_pair() {
                 document.getElementById("result").innerHTML = `<div class="alert alert-warning" role="alert">${fsym} is not currently included in CCCAGG.</div>`;
             } else {
                 if (tsyms.join("") === "") {
-                    console.info(tsyms);
-                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym}: [${Object.keys(response.Data.tsyms).join(", ")}]</div>`;
+                    const resp_tsyms = response.Data.tsyms;
+                    const pairs = [];
+                    for (const tsym in resp_tsyms) {
+                        const exchanges = Object.keys(resp_tsyms[tsym].exchanges).join(", ");
+                        pairs.push(`${fsym}-${tsym} (${exchanges})`);
+                    }
+                    document.getElementById("result").innerHTML = `<div class="alert alert-info" role="alert">${fsym}: [${pairs.join(", ")}]</div>`;
                 } else {
                     const pairs = [];
-                    console.info(tsyms);
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
-                            pairs.push(`<span style="color:green">&#x2714; ${fsym}/${tsym}</span>`);
+                            const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
+                            pairs.push(`<span style="color:green">&#x2714; ${fsym}-${tsym} (${exchanges})</span>`);
                         } else {
-                            pairs.push(`<span style="color:red">&#x2718; ${fsym}/${tsym}</span>`);
+                            pairs.push(`<span style="color:red">&#x2718; ${fsym}-${tsym}</span>`);
                         }
                     }
                     document.getElementById("result").innerHTML = pairs.join("<br>");
@@ -30,8 +35,4 @@ function check_cccagg_pair() {
             console.error(error);
             document.getElementById("result").innerHTML = `<div class="alert alert-danger" role="alert">An error occurred while processing your request.</div>`;
         });
-}
-
-function clear_result() {
-    document.getElementById("result").innerHTML = "";
 }
