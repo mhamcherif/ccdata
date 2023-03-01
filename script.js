@@ -43,8 +43,9 @@ function check_cccagg_pair() {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${exchanges}</td></tr>`);
                         } else {
-                            get_exchanges(fsym, tsyms)
-                            //pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td></tr>`);
+                            get_exchanges(fsym, tsym, function (exchanges) {
+                                pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${exchanges.join(', ')}</td></tr>`);
+                            });
                         }
                     }
                     const table = `
@@ -75,39 +76,22 @@ function clear_result() {
     document.getElementById("result").innerHTML = "";
 }
 
-function get_exchanges(fsym, tsyms) {
-    const url = `https://min-api.cryptocompare.com/data/v4/all/exchanges?fsym=${fsym}`;
+function get_exchanges(fsym, tsym, callback) {
+    // Construct the API endpoint URL with the given parameters
+    const url = `https://example.com/api/exchanges?fsym=${fsym}&tsym=${tsym}`;
 
+    // Make a GET request to the API endpoint using the Fetch API
     fetch(url)
         .then(response => response.json())
-        .then(response => {
-            const exchanges = [];
-            for (const exchange in response.Data.exchanges) {
-                const pairs = response.Data.exchanges[exchange].pairs;
-                if (tsyms.every(tsym => tsym in pairs[fsym].tsyms)) {
-                    exchanges.push(exchange);
-                }
-            }
-            if (exchanges.length > 0) {
-                const html = `
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Exchange</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${exchanges.map(exchange => `<tr><td>${exchange}</td></tr>`).join("")}
-                        </tbody>
-                    </table>
-                `;
-                document.getElementById("result").innerHTML = html;
-            } else {
-                document.getElementById("result").innerHTML = `<div class="alert alert-warning" role="alert">No exchanges found for ${fsym}/${tsyms.join(", ")}</div>`;
-            }
+        .then(data => {
+            // Extract the list of exchanges from the API response
+            const exchanges = data.exchanges;
+
+            // Call the provided callback function with the list of exchanges
+            callback(exchanges);
         })
         .catch(error => {
-            console.error(error);
-            document.getElementById("result").innerHTML = `<div class="alert alert-danger" role="alert">An error occurred while processing your request.</div>`;
+            // Handle any errors that occur during the request or response
+            console.error(`Failed to fetch exchanges for ${fsym}-${tsym}: ${error}`);
         });
 }
