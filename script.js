@@ -78,14 +78,24 @@ function clear_result() {
 
 function get_exchanges(fsym, tsym, callback) {
     // Construct the API endpoint URL with the given parameters
-    const url = `https://example.com/api/exchanges?fsym=${fsym}&tsym=${tsym}`;
+    const url = `https://min-api.cryptocompare.com/data/v4/all/exchanges?fsym=${fsym}`;
 
     // Make a GET request to the API endpoint using the Fetch API
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            // Extract the list of exchanges from the API response
-            const exchanges = data.exchanges;
+            // Extract the list of exchanges that support the given pair
+            const exchanges = [];
+            const exchangePairs = data.Data.exchanges;
+            for (const exchange in exchangePairs) {
+                const pairs = exchangePairs[exchange].pairs;
+                if (pairs.hasOwnProperty(fsym)) {
+                    const tsyms = pairs[fsym].tsyms;
+                    if (tsyms.hasOwnProperty(tsym)) {
+                        exchanges.push(exchange);
+                    }
+                }
+            }
 
             // Call the provided callback function with the list of exchanges
             callback(exchanges);
