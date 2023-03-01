@@ -93,10 +93,11 @@ function get_exchanges(fsym, tsym, callback) {
                     const tsyms = pairs[fsym].tsyms;
                     if (tsyms.hasOwnProperty(tsym)) {
                         exchanges.push(exchange);
+                        console.info(exchanges)
                     }
                 }
             }
-
+            console.info(exchanges)
             // Call the provided callback function with the list of exchanges
             callback(exchanges);
         })
