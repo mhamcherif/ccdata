@@ -3,6 +3,8 @@ function check_cccagg_pair() {
     const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
     const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
 
+    clear_result()
+
     fetch(url)
         .then(response => response.json())
         .then(response => {
