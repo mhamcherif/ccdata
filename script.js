@@ -38,15 +38,16 @@ function check_cccagg_pair() {
                     document.getElementById("result").innerHTML = table;
                 } else {
                     const pairs = [];
+                    const availInstruments = []
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${exchanges}</td></tr>`);
                         } else {
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td></tr>`)
-                            // get_exchanges(fsym, tsym, function (exchanges) {
-                            //     pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${exchanges.join(', ')}</td></tr>`);
-                            // });
+                            get_exchanges(fsym, tsym, function (exchanges) {
+                                availInstruments.push(`${fsym}-${tsym}: ${exchanges.join(', ')}`);
+                            });
                         }
                     }
                     console.info(pairs)
@@ -65,9 +66,13 @@ function check_cccagg_pair() {
                             </tbody>
                         </table>
                     `;
-                    console.info(pairs)
-                    console.info(pairs.join())
+                    const extraInfo = `
+                    ${availInstruments.join("\n")}
+                    `
+                    console.info(availInstruments)
+                    console.info(availInstruments.join())
                     document.getElementById("result").innerHTML = table;
+                    document.getElementById("extra").innerHTML = extraInfo;
                 }
             }
         })
@@ -79,6 +84,7 @@ function check_cccagg_pair() {
 
 function clear_result() {
     document.getElementById("result").innerHTML = "";
+    document.getElementById("extra").innerHTML = "";
 }
 
 function get_exchanges(fsym, tsym, callback) {
