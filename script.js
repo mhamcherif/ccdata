@@ -46,7 +46,7 @@ function check_cccagg_pair() {
                         } else {
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td></tr>`)
                             get_exchanges(fsym, tsym, function (exchanges) {
-                                availInstruments.push(`${fsym}-${tsym}: ${exchanges.join(', ')}`);
+                                availInstruments.push(`${fsym}-${tsym}: ${exchanges}`);
                             });
                         }
                     }
