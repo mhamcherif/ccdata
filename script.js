@@ -38,16 +38,16 @@ function check_cccagg_pair() {
                     document.getElementById("result").innerHTML = table;
                 } else {
                     const pairs = [];
-                    const availInstruments = []
+                    const availExchanges = []
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${exchanges}</td></tr>`);
                         } else {
                             get_exchanges(fsym, tsym, function (exchanges) {
-                                availInstruments.push(`${fsym}-${tsym}: ${exchanges}<br>`);
+                                availExchanges.push(`${exchanges}<br>`);
                             });
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${availInstruments}</td></tr>`)
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${availExchanges.join(", ")}</td></tr>`)
                         }
                     }
                     console.info(pairs)
@@ -104,9 +104,10 @@ function get_exchanges(fsym, tsym, callback) {
                     }
                 }
             }
-            console.info(fsym, tsym, exchanges)
-            // Call the provided callback function with the list of exchanges
-            callback(exchanges);
+            console.info(fsym, tsym, exchanges);
+            document.getElementById("extra").innerHTML =
+                // Call the provided callback function with the list of exchanges
+                callback(exchanges);
         })
         .catch(error => {
             // Handle any errors that occur during the request or response
