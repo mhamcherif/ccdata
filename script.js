@@ -109,14 +109,19 @@ function get_exchanges(fsym, tsym, callback) {
             console.info(fsym, tsym, exchanges);
             // Get the reference to the "extra" element
             let extraElement = document.getElementById("extra");
-            // Create a new div element
-            let newDivElement = document.createElement("div");
-            newDivElement.classList.add("alert", "alert-secondary");
-            newDivElement.setAttribute("role", "alert");
-            newDivElement.innerHTML = `${fsym}-${tsym}: ${exchanges.join(", ")}`;
 
-            // Append the new div element to the "extra" element
-            extraElement.insertAdjacentElement("beforeend", newDivElement);
+            // Check if the exchanges array is not empty
+            if (exchanges.length > 0) {
+                // Create a new div element
+                let newDivElement = document.createElement("div");
+                newDivElement.classList.add("alert", "alert-secondary");
+                newDivElement.setAttribute("role", "alert");
+                newDivElement.innerHTML = `${fsym}-${tsym}: ${exchanges.join(", ")}`;
+
+                // Append the new div element to the "extra" element
+                extraElement.insertAdjacentElement("beforeend", newDivElement);
+            }
+
 
             //document.getElementById("extra").innerHTML = `<div class="alert alert-secondary" role="alert">${fsym}-${tsym} ${exchanges.join(", ")}</div>`
             // Call the provided callback function with the list of exchanges
