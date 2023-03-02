@@ -69,7 +69,7 @@ function check_cccagg_pair() {
                     console.info(availInstruments)
                     console.info(availInstruments.join(" | "))
                     document.getElementById("result").innerHTML = table;
-                    document.getElementById("extra").innerHTML = "TEST" //`${availInstruments.join("\n")}`;
+                    // document.getElementById("extra").innerHTML = "TEST" //`${availInstruments.join("\n")}`;
                 }
             }
         })
@@ -101,11 +101,10 @@ function get_exchanges(fsym, tsym, callback) {
                     const tsyms = pairs[fsym].tsyms;
                     if (tsyms.hasOwnProperty(tsym)) {
                         exchanges.push(exchange);
-                        console.info(exchanges)
                     }
                 }
             }
-            console.info(exchanges)
+            console.info(fsym, tsym, exchanges)
             // Call the provided callback function with the list of exchanges
             callback(exchanges);
         })
