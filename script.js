@@ -69,7 +69,7 @@ function check_cccagg_pair() {
                     console.info(availInstruments)
                     console.info(availInstruments.join(" | "))
                     document.getElementById("result").innerHTML = table;
-                    document.getElementById("extra").innerHTML = `${availInstruments.join("\n")}`;
+                    document.getElementById("extra").innerHTML = "TEST" //`${availInstruments.join("\n")}`;
                 }
             }
         })
