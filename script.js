@@ -1,11 +1,11 @@
 function check_cccagg_pair() {
     const fsym = document.getElementById("fsym").value.toUpperCase();
     const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
-    const url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
+    const cccagg_url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
 
     clear_result()
 
-    fetch(url)
+    fetch(cccagg_url)
         .then(response => response.json())
         .then(response => {
             if (Object.keys(response.Data).length === 0) {
@@ -88,10 +88,10 @@ function clear_result() {
 
 function get_exchanges(fsym, tsym, callback) {
     // Construct the API endpoint URL with the given parameters
-    const url = `https://min-api.cryptocompare.com/data/v4/all/exchanges?fsym=${fsym}`;
+    const exchanges_url = `https://min-api.cryptocompare.com/data/v4/all/exchanges?fsym=${fsym}`;
 
     // Make a GET request to the API endpoint using the Fetch API
-    fetch(url)
+    fetch(exchanges_url)
         .then(response => response.json())
         .then(data => {
             // Extract the list of exchanges that support the given pair
