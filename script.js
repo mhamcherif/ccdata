@@ -66,10 +66,10 @@ function check_cccagg_pair() {
                             </tbody>
                         </table>
                     `;
-                    console.info(availInstruments)
-                    console.info(availInstruments.join(" | "))
+                    console.info(availExchanges)
+                    console.info(availExchanges.join(" | "))
                     document.getElementById("result").innerHTML = table;
-                    // document.getElementById("extra").innerHTML = "TEST" //`${availInstruments.join("\n")}`;
+                    // document.getElementById("extra").innerHTML = "TEST" //`${availExchanges.join("\n")}`;
                 }
             }
         })
