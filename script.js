@@ -105,7 +105,18 @@ function get_exchanges(fsym, tsym, callback) {
                 }
             }
             console.info(fsym, tsym, exchanges);
-            document.getElementById("extra").innerHTML = `<div class="alert alert-info" role="alert">${fsym}-${tsym} ${exchanges.join(", ")}</div>`
+            // Get the reference to the "extra" element
+            let extraElement = document.getElementById("extra");
+            // Create a new div element
+            let newDivElement = document.createElement("div");
+            newDivElement.classList.add("alert", "alert-info");
+            newDivElement.setAttribute("role", "alert");
+            newDivElement.innerHTML = `${fsym}-${tsym} ${exchanges.join(", ")}`;
+
+            // Append the new div element to the "extra" element
+            extraElement.insertAdjacentElement("beforeend", newDivElement);
+
+            //document.getElementById("extra").innerHTML = `<div class="alert alert-info" role="alert">${fsym}-${tsym} ${exchanges.join(", ")}</div>`
             // Call the provided callback function with the list of exchanges
             callback(exchanges);
         })
