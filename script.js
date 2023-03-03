@@ -5,6 +5,8 @@ function check_cccagg_pair() {
 
     clear_result()
 
+    get_coin_info(fsym)
+
     fetch(cccagg_url)
         .then(response => response.json())
         .then(response => {
@@ -88,6 +90,7 @@ function check_cccagg_pair() {
 }
 
 function clear_result() {
+    document.getElementById("coin").innerHTML = "";
     document.getElementById("result").innerHTML = "";
     document.getElementById("extra").innerHTML = "";
 }
@@ -138,3 +141,37 @@ function get_exchanges(fsym, tsym, callback) {
             console.error(`Failed to fetch exchanges for ${fsym}-${tsym}: ${error}`);
         });
 }
+
+function get_coin_info(fsym) {
+    const coinlist_url = `https://min-api.cryptocompare.com/data/all/coinlist?fsym=${fsym}`;
+
+    fetch(coinlist_url)
+        .then((response) => {
+            if (response.status !== 200) {
+                console.log(`Error: ${response.status}`);
+                return;
+            }
+            response.json().then((data) => {
+                const coin = [];
+                if (data.Response === "Success" && Object.keys(data.Data).length !== 0) {
+                    const coinInfo = data.Data[fsym];
+                    const coinFullName = coinInfo.FullName;
+                    const Url = coinInfo.Url;
+                    const launchedDate = coinInfo.AssetLaunchDate;
+                    const contentCreatedOn = new Date(coinInfo.ContentCreatedOn * 1000).toISOString().slice(0, 10);
+
+                    const output = `Coin: <a href="https://cryptocompare.com${coinInfo.Url}">${coinFullName}</a><br>
+                                    Launched: ${launchedDate}<br>
+                                    Content Created On: ${contentCreatedOn}<br><br>`;
+
+                    document.getElementById("coin").innerHTML = output;
+
+                }
+            });
+        })
+        .catch((err) => {
+            console.log(`Error: ${err}`);
+        });
+
+}
+
