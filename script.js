@@ -54,7 +54,7 @@ function check_cccagg_pair() {
                             get_exchanges(fsym, tsym, function (exchanges) {
                                 availExchanges.push(`${exchanges}<br>`);
                             });
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td>${availExchanges.join(", ")}</td></tr>`)
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td><td>${availExchanges.join(", ")}</td></tr>`)
                         }
                     }
                     console.info(pairs)
