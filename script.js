@@ -1,5 +1,5 @@
 function check_cccagg_pair() {
-    const fsym = document.getElementById("fsym").value.toUpperCase();
+    const fsym = document.getElementById("fsym").value.trim().toUpperCase();
     const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
     const cccagg_url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
 
@@ -17,6 +17,7 @@ function check_cccagg_pair() {
                                   <thead>
                                     <tr>
                                       <th>Pair</th>
+                                      <th>Histo. Start</th>
                                       <th>Exchanges</th>
                                     </tr>
                                   </thead>
@@ -30,8 +31,10 @@ function check_cccagg_pair() {
                             }
                         }
                         const exchangeStr = exchanges.join(", ");
+                        const histo_minute_start = resp_tsyms[tsym].histo_minute_start;
                         table += `<tr>
                                   <td>${fsym}-${tsym}</td>
+                                  <td>${histo_minute_start}</td>
                                   <td>${exchangeStr}</td>
                                 </tr>`;
                     }
@@ -43,8 +46,10 @@ function check_cccagg_pair() {
                     const availExchanges = []
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
+                            const histo_minute_start = response.Data.tsyms[tsym].histo_minute_start;
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${exchanges}</td></tr>`);
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${histo_minute_start}</td><td>${exchanges}</td></tr>`);
+                            console.info(histo_minute_start)
                         } else {
                             get_exchanges(fsym, tsym, function (exchanges) {
                                 availExchanges.push(`${exchanges}<br>`);
@@ -60,6 +65,7 @@ function check_cccagg_pair() {
                                 <tr>
                                     <th>Pair</th>
                                     <th>Included</th>
+                                    <th>Histo. Start</th>
                                     <th>Exchanges</th>
                                 </tr>
                             </thead>
