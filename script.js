@@ -3,7 +3,10 @@ function check_cccagg_pair() {
     const tsyms = document.getElementById("tsyms").value.toUpperCase().split(",").map(tsym => tsym.trim());
     const cccagg_url = `https://min-api.cryptocompare.com/data/v2/cccagg/pairs?fsym=${fsym}`;
 
-    clear_result()
+    // Clear data
+    document.getElementById("coin").innerHTML = "";
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("extra").innerHTML = "";
 
     get_coin_info(fsym)
 
@@ -90,6 +93,8 @@ function check_cccagg_pair() {
 }
 
 function clear_result() {
+    document.getElementById("tsyms").value = "";
+    // Coin Listing Info
     document.getElementById("coin").innerHTML = "";
     document.getElementById("result").innerHTML = "";
     document.getElementById("extra").innerHTML = "";
