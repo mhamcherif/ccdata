@@ -126,18 +126,35 @@ function get_exchanges(fsym, tsym, callback) {
 
             // Check if the exchanges array is not empty
             if (exchanges.length > 0) {
-                // Create a new div element
-                let newDivElement = document.createElement("div");
-                newDivElement.classList.add("alert", "alert-secondary");
-                newDivElement.setAttribute("role", "alert");
-                newDivElement.innerHTML = `${fsym}-${tsym}: ${exchanges.join(", ")}`;
+                // Check if the table has already been created
+                let tableElement = extraElement.querySelector(`table[data-fsym='${fsym}']`);
+                if (!tableElement) {
+                    // Create a new table element
+                    tableElement = document.createElement("table");
+                    tableElement.classList.add("table", "table-striped");
+                    tableElement.setAttribute("data-fsym", fsym);
+                    tableElement.innerHTML = `
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>Available Exchanges</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    `;
+                    extraElement.insertAdjacentElement("beforeend", tableElement);
+                }
 
-                // Append the new div element to the "extra" element
-                extraElement.insertAdjacentElement("beforeend", newDivElement);
+                // Add a new row to the table
+                let tbodyElement = tableElement.querySelector("tbody");
+                let newRowElement = document.createElement("tr");
+                newRowElement.innerHTML = `
+                    <td>${fsym}-${tsym}</td>
+                    <td>${exchanges.join(", ")}</td>
+                `;
+                tbodyElement.insertAdjacentElement("beforeend", newRowElement);
             }
 
-
-            //document.getElementById("extra").innerHTML = `<div class="alert alert-secondary" role="alert">${fsym}-${tsym} ${exchanges.join(", ")}</div>`
             // Call the provided callback function with the list of exchanges
             callback(exchanges);
         })
@@ -146,6 +163,9 @@ function get_exchanges(fsym, tsym, callback) {
             console.error(`Failed to fetch exchanges for ${fsym}-${tsym}: ${error}`);
         });
 }
+
+
+
 
 function get_coin_info(fsym) {
     const coinlist_url = `https://min-api.cryptocompare.com/data/all/coinlist?fsym=${fsym}`;
@@ -177,6 +197,7 @@ function get_coin_info(fsym) {
         .catch((err) => {
             console.log(`Error: ${err}`);
         });
+
 
 }
 
