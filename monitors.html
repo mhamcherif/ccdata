@@ -2,25 +2,36 @@
 <html>
 
 <head>
-    <title>TSE Tools</title>
-    <!-- Add Bootstrap CSS file -->
+    <title>Monitors Table</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 
 <body>
     <div class="container">
-        <div class="jumbotron">
-            <h1>Welcome to TSE tools!</h1>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="monitors.html">Monitors</a></li>
-                <li class="list-group-item"><a href="cccagg_checker.html">CCCAGG Checker</a></li>
-            </ul>
+        <h2>Monitors</h2>
+        <p>This is a list of monitors.</p>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr class="table-primary">
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Slack Channel</th>
+                        <th class="text-center">Schedule</th>
+                        <th class="text-center">Authors</th>
+                    </tr>
+                </thead>
+                <tbody id="monitorsTableBody"></tbody>
+            </table>
         </div>
     </div>
-    <!-- Add Bootstrap JS file -->
+    <script src="script/monitors-script.js"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
