@@ -179,7 +179,7 @@ function get_coin_info(fsym) {
 }
 
 function getLastUpdate(fsym, tsym) {
-    return fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${fsym}&tsyms=${tsym}&tryConvesrion=false&e=CCCAGG`)
+    return fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${fsym}&tsyms=${tsym}&tryConversion=false&e=CCCAGG`)
         .then(resp => resp.json())
         .then(resp => resp.DISPLAY[fsym][tsym].LASTUPDATE)
         .catch(() => "");
