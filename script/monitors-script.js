@@ -3,7 +3,7 @@
 
 // TODO: Add link to argocd -> https://argocd.prod.epic-robot.club/applications/<app_name>
 // e.g. https://argocd.prod.epic-robot.club/applications/qa-orderbook-vs-trade
-fetch('monitors.json')
+fetch('script/monitors.json')
     .then(response => response.json())
     .then(data => {
         const monitorsTableBody = document.getElementById('monitorsTableBody');
