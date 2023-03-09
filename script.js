@@ -22,7 +22,7 @@ function check_cccagg_pair() {
                                   <thead>
                                     <tr>
                                       <th>Pair</th>
-                                      <th>Histo. Start</th>
+                                      <th>Histo. Minute Start</th>
                                       <th>Exchanges</th>
                                     </tr>
                                   </thead>
@@ -55,6 +55,9 @@ function check_cccagg_pair() {
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
                             pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${histo_minute_start}</td><td>${exchanges}</td></tr>`);
                             console.info(histo_minute_start)
+                            get_exchanges(fsym, tsym, function (exchanges) {
+                                availExchanges.push(`${exchanges}<br>`);
+                            });
                         } else {
                             get_exchanges(fsym, tsym, function (exchanges) {
                                 availExchanges.push(`${exchanges}<br>`);
