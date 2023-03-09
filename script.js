@@ -6,7 +6,7 @@ function check_cccagg_pair() {
     // Clear data
     document.getElementById("coin").innerHTML = "";
     document.getElementById("result").innerHTML = "";
-    document.getElementById("extra").innerHTML = "";
+
 
     get_coin_info(fsym)
 
@@ -47,22 +47,25 @@ function check_cccagg_pair() {
                     table += `</tbody></table>`;
                     document.getElementById("result").innerHTML = table;
                 } else {
+                    // the case of given fsym & tsyms
                     const pairs = [];
                     const availExchanges = []
                     for (const tsym of tsyms) {
                         if (tsym in response.Data.tsyms) {
                             const histo_minute_start = response.Data.tsyms[tsym].histo_minute_start;
                             const exchanges = Object.keys(response.Data.tsyms[tsym].exchanges).join(", ");
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${histo_minute_start}</td><td>${exchanges}</td></tr>`);
-                            console.info(histo_minute_start)
                             get_exchanges(fsym, tsym, function (exchanges) {
-                                availExchanges.push(`${exchanges}<br>`);
+                                const exchangesElem = document.getElementById(`${fsym}-${tsym}-exchanges`);
+                                exchangesElem.textContent = exchanges.join(", ");
                             });
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2713;</td><td>${histo_minute_start}</td><td>${exchanges}</td><td id="${fsym}-${tsym}-exchanges"></td></tr>`);
+                            console.info(histo_minute_start)
                         } else {
                             get_exchanges(fsym, tsym, function (exchanges) {
-                                availExchanges.push(`${exchanges}<br>`);
+                                const exchangesElem = document.getElementById(`${fsym}-${tsym}-exchanges`);
+                                exchangesElem.textContent = exchanges.join(", ");
                             });
-                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td><td>${availExchanges.join(", ")}</td></tr>`)
+                            pairs.push(`<tr><td>${fsym}-${tsym}</td><td>&#x2717;</td><td></td><td>${availExchanges.join(", ")}</td><td id="${fsym}-${tsym}-exchanges"></td></tr>`)
                         }
                     }
                     console.info(pairs)
@@ -75,6 +78,7 @@ function check_cccagg_pair() {
                                     <th>Included</th>
                                     <th>Histo. Minute Start</th>
                                     <th>Exchanges</th>
+                                    <th>Supported Exchanges</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,7 +89,6 @@ function check_cccagg_pair() {
                     console.info(availExchanges)
                     console.info(availExchanges.join(" | "))
                     document.getElementById("result").innerHTML = table;
-                    // document.getElementById("extra").innerHTML = "TEST" //`${availExchanges.join("\n")}`;
                 }
             }
         })
@@ -100,7 +103,6 @@ function clear_result() {
     // Coin Listing Info
     document.getElementById("coin").innerHTML = "";
     document.getElementById("result").innerHTML = "";
-    document.getElementById("extra").innerHTML = "";
 }
 
 function get_exchanges(fsym, tsym, callback) {
@@ -124,39 +126,6 @@ function get_exchanges(fsym, tsym, callback) {
                 }
             }
             console.info(fsym, tsym, exchanges);
-            // Get the reference to the "extra" element
-            let extraElement = document.getElementById("extra");
-
-            // Check if the exchanges array is not empty
-            if (exchanges.length > 0) {
-                // Check if the table has already been created
-                let tableElement = extraElement.querySelector(`table[data-fsym='${fsym}']`);
-                if (!tableElement) {
-                    // Create a new table element
-                    tableElement = document.createElement("table");
-                    tableElement.classList.add("table", "table-striped");
-                    tableElement.setAttribute("data-fsym", fsym);
-                    tableElement.innerHTML = `
-                        <thead>
-                            <tr>
-                                <th>Pair</th>
-                                <th>Available Exchanges</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    `;
-                    extraElement.insertAdjacentElement("beforeend", tableElement);
-                }
-
-                // Add a new row to the table
-                let tbodyElement = tableElement.querySelector("tbody");
-                let newRowElement = document.createElement("tr");
-                newRowElement.innerHTML = `
-                    <td>${fsym}-${tsym}</td>
-                    <td>${exchanges.join(", ")}</td>
-                `;
-                tbodyElement.insertAdjacentElement("beforeend", newRowElement);
-            }
 
             // Call the provided callback function with the list of exchanges
             callback(exchanges);
@@ -166,8 +135,6 @@ function get_exchanges(fsym, tsym, callback) {
             console.error(`Failed to fetch exchanges for ${fsym}-${tsym}: ${error}`);
         });
 }
-
-
 
 
 function get_coin_info(fsym) {
