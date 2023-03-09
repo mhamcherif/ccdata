@@ -18,10 +18,12 @@ function check_cccagg_pair() {
             } else {
                 if (tsyms.join("") === "") {
                     const resp_tsyms = response.Data.tsyms;
+                    let promises = [];
                     let table = `<table class="table table-bordered">
                                   <thead>
                                     <tr>
                                       <th>Pair</th>
+                                      <th>Last Update</th>
                                       <th>Histo. Minute Start</th>
                                       <th>Exchanges</th>
                                     </tr>
@@ -31,21 +33,26 @@ function check_cccagg_pair() {
                     for (const tsym in resp_tsyms) {
                         const exchanges = [];
                         for (const exchange in resp_tsyms[tsym].exchanges) {
-                            if (resp_tsyms[tsym].exchanges[exchange].isActive) {
-                                exchanges.push(exchange);
-                            }
+                            exchanges.push(exchange);
                         }
                         const exchangeStr = exchanges.join(", ");
                         const histo_minute_start = resp_tsyms[tsym].histo_minute_start;
-                        table += `<tr>
-                                  <td>${fsym}-${tsym}</td>
-                                  <td>${histo_minute_start}</td>
-                                  <td>${exchangeStr}</td>
-                                </tr>`;
+                        const promise = getLastUpdate(fsym, tsym, exchanges)
+                            .then(lastUpdate => {
+                                return `<tr>
+                                                        <td>${fsym}-${tsym}</td>
+                                                        <td>${lastUpdate}</td>
+                                                        <td>${histo_minute_start}</td>
+                                                        <td>${exchangeStr}</td>
+                                                    </tr>`;
+                            });
+                        promises.push(promise);
                     }
-
-                    table += `</tbody></table>`;
-                    document.getElementById("result").innerHTML = table;
+                    Promise.all(promises).then(values => {
+                        table += values.join("");
+                        table += `</tbody></table>`;
+                        document.getElementById("result").innerHTML = table;
+                    });
                 } else {
                     // the case of given fsym & tsyms
                     const pairs = [];
@@ -169,5 +176,12 @@ function get_coin_info(fsym) {
         });
 
 
+}
+
+function getLastUpdate(fsym, tsym) {
+    return fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${fsym}&tsyms=${tsym}&tryConvesrion=false&e=CCCAGG`)
+        .then(resp => resp.json())
+        .then(resp => resp.DISPLAY[fsym][tsym].LASTUPDATE)
+        .catch(() => "");
 }
 
