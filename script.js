@@ -73,7 +73,7 @@ function check_cccagg_pair() {
                                 <tr>
                                     <th>Pair</th>
                                     <th>Included</th>
-                                    <th>Histo. Start</th>
+                                    <th>Histo. Minute Start</th>
                                     <th>Exchanges</th>
                                 </tr>
                             </thead>
