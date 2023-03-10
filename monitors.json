@@ -1,0 +1,197 @@
+{
+    "monitors": [
+        {
+            "name": "3iq",
+            "description": "The difference between trade and orderbook for exchange/pairs used for 3iq.",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "5,15,25,35,45,55 * * * *",
+            "authors": [
+                "Jack"
+            ]
+        },
+        {
+            "name": "blob-vs-api",
+            "description": "The difference between trades between blobs and the api",
+            "slack": "blobs_vs_api_validation",
+            "schedule": "",
+            "authors": [
+                "Jimena"
+            ]
+        },
+        {
+            "name": "blockchain-data",
+            "description": "Monitors blockchain data.",
+            "slack": "cryptocompare-ftw-trackinsight-monitoring",
+            "schedule": "50 11 * * *",
+            "authors": [
+                "Jack"
+            ]
+        },
+        {
+            "name": "cccaggvalidation",
+            "description": "CCCAGG Validation",
+            "slack": "cccagg_validation",
+            "schedule": "",
+            "authors": [
+                "Jimena",
+                "Suhayl"
+            ]
+        },
+        {
+            "name": "db-maintenance",
+            "description": "Backup and maintain the postgres databases",
+            "slack": "",
+            "schedule": "",
+            "authors": [
+                "Suhayl"
+            ]
+        },
+        {
+            "name": "exchange-activity",
+            "description": "This container checks the activity of the exchanges.",
+            "slack": "",
+            "schedule": "",
+            "authors": [
+                "Alex"
+            ]
+        },
+        {
+            "name": "future-timestamps",
+            "description": "Monitors future timestamps.",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "15 * * * *",
+            "authors": [
+                "Suhayl",
+                "Alex"
+            ]
+        },
+        {
+            "name": "histo-min-csv",
+            "description": "Monitors the historical minute OHLCV (CSV) endpoint for all CCCAGG pairs.",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "15 15 * * *",
+            "authors": [
+                "Mansour"
+            ]
+        },
+        {
+            "name": "historical-snapshot",
+            "description": "Mointors the snapshots saved to the poc or production system",
+            "slack": "production-ob-histosnapshot-monitoring",
+            "schedule": "0 4 * * *",
+            "authors": [
+                "Alex"
+            ]
+        },
+        {
+            "name": "historical-update",
+            "description": "Mointors the updates saved to the stage/poc or production system",
+            "slack": "",
+            "schedule": "0 6 * * *",
+            "authors": [
+                "Alex"
+            ]
+        },
+        {
+            "name": "index-priority-pairs",
+            "description": "Monitors Priority Pairs which are used in Indices",
+            "slack": "bespoke-index-monitoring",
+            "schedule": "*/20 * * * *",
+            "authors": [
+                "Suhayl",
+                "Alex"
+            ]
+        },
+        {
+            "name": "index-qa-eod-files",
+            "description": "Monitors Index EOD - MVIS",
+            "slack": "",
+            "schedule": "",
+            "authors": [
+                "Jimena"
+            ]
+        },
+        {
+            "name": "latest-news",
+            "description": "Latest news publication.",
+            "slack": "news-monitoring",
+            "schedule": "40 * * * *",
+            "authors": [
+                "Mansour"
+            ]
+        },
+        {
+            "name": "node-support",
+            "description": "Monitors nodes health and trading (using exchange dashboard).",
+            "slack": "24-hour-node-support",
+            "schedule": "45 */2 * * *",
+            "authors": [
+                "Mansour"
+            ]
+        },
+        {
+            "name": "orderbook-vs-trade",
+            "description": "This monitoring processes queries the cc api end-points for the latest trades and orderbook updates. Then compares their prices and flags any major descrepencies in a slack channel.",
+            "slack": "ob-vs-trade-monitoring",
+            "schedule": "10 10 * * *",
+            "authors": [
+                "Jack"
+            ]
+        },
+        {
+            "name": "volume/exchange-activity",
+            "description": "Checks to see if the volume of any exchange is off.",
+            "slack": "exchange_monitoring",
+            "schedule": "30 * * * *",
+            "authors": [
+                "Suhayl",
+                "Alex"
+            ]
+        },
+        {
+            "name": "outlier-bad-mapping",
+            "description": "This monitor checks for outlier prices and/or possible bad mapping.",
+            "slack": "outliers-and-bad-mappings",
+            "schedule": "0 6 * * *",
+            "authors": [
+                "Mansour"
+            ]
+        },
+        {
+            "name": "raw-trade-vs-api",
+            "description": "This module  compares raw trade files against API historical hour endpoint",
+            "slack": "",
+            "schedule": "",
+            "authors": [
+                "Mansour"
+            ]
+        },
+        {
+            "name": "stale",
+            "description": "Monitors exchanges trading to check for stale pairs",
+            "slack": "stale-pairs-monitoring",
+            "schedule": "0 11 * * *",
+            "authors": [
+                "Suhayl"
+            ]
+        },
+        {
+            "name": "v2-exchange-volume",
+            "description": "Compares V2/V1 exchange volumes.",
+            "slack": "qa-v2-exchange-volumes",
+            "schedule": "0 8 * * *",
+            "authors": [
+                "Mansour"
+            ]
+        },
+        {
+            "name": "v2-unmapped-instruments",
+            "description": "Checks V2 unmapped instruments.",
+            "slack": "qa-v2-unmapped-instruments",
+            "schedule": "30 6 * * *",
+            "authors": [
+                "Mansour"
+            ]
+        }
+    ]
+}
