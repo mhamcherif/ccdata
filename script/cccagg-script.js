@@ -106,9 +106,14 @@ function check_cccagg_pair() {
 }
 
 function clear_result() {
+    // Reset the toggle
+    document.getElementById("toggleSwitch").checked = false;
+    updateLabel();
+    // Clear tsyms
     document.getElementById("tsyms").value = "";
-    // Coin Listing Info
+    // Clear Coin Listing Info
     document.getElementById("coin").innerHTML = "";
+    // Clear Result Listing
     document.getElementById("result").innerHTML = "";
 }
 
@@ -185,3 +190,11 @@ function getLastUpdate(fsym, tsym) {
         .catch(() => "");
 }
 
+function updateLabel() {
+    var toggleLabel = document.getElementById("toggleLabel");
+    var useDefault = document.getElementById("toggleSwitch").checked;
+    toggleLabel.innerHTML = useDefault ? "Default" : "Custom";
+    var tsymsInput = document.getElementById("tsyms");
+    tsymsInput.value = useDefault ? "BTC,ETH,WETH,BNB,USDT" : "";
+
+}
