@@ -25,11 +25,23 @@ async function fetchData() {
 
 function populateTable(data, statusMapping) {
     var table = $('#exchangeTable').DataTable({
-        "destroy": true, // This allows you to reinitialize the DataTable
+        "destroy": true,
         "data": data.map(item => {
             const fields = item.split('~');
             const instrumentKey = `${fields[2]}-${fields[3]}`;
             const status = statusMapping[instrumentKey] || 'Unknown';
+            const lastUpdateTS = parseInt(fields[6]) * 1000;
+            const currentTime = new Date().getTime();
+            const oneHour = 3600000; // One hour in milliseconds
+            const oneMonth = 2629743000; // One month in milliseconds
+            let flag = '';
+
+            // Check if status is RETIRED and Last Update TS is within the last hour
+            if (status === 'RETIRED' && (currentTime - lastUpdateTS) <= oneHour) {
+                flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/retired?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
+            } else if (status === 'ACTIVE' && (currentTime - lastUpdateTS) >= oneMonth) {
+                flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
+            }
             return [
                 fields[1], // Market
                 fields[2], // Base
@@ -39,7 +51,8 @@ function populateTable(data, statusMapping) {
                 fields[6], // Last Update TS
                 new Date(fields[6] * 1000).toISOString(), //use toLocaleString() to Converte to local time zone
                 fields[9], // Last Trade ID
-                status  // Instrument Status
+                status,  // Instrument Status
+                flag // Flag
             ];
         }),
         "columns": [
@@ -51,7 +64,8 @@ function populateTable(data, statusMapping) {
             { "title": "Last Update TS" },
             { "title": "Date (Read-able)" },
             { "title": "Last Trade ID" },
-            { "title": "Instrument Status" }
+            { "title": "Instrument Status" },
+            { "title": "Flag" }
         ],
         // specifies the dataTable options in the page length menu 
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], // Page length options
