@@ -39,6 +39,7 @@ function populateTable(data, statusMapping) {
             // Check if status is RETIRED and Last Update TS is within the last hour
             if (status === 'RETIRED' && (currentTime - lastUpdateTS) <= oneHour) {
                 flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/retired?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
+                // Else check if status is ACTIVE and Last Update TS is over one month ago
             } else if (status === 'ACTIVE' && (currentTime - lastUpdateTS) >= oneMonth) {
                 flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
             }
