@@ -17,6 +17,12 @@ async function fetchData() {
     const response = await fetch(`https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`);
     const data = await response.json();
 
+    // Find the most recent last trade timestamp
+    let mostRecentTS = Math.max(...data.Data.map(item => parseInt(item.split('~')[6])));
+
+    // Update the display
+    updateLastTradeDisplay(exchange, mostRecentTS);
+
     clearTableData();
     document.getElementById('tableHeader').style.display = 'table-header-group';
     // Populate table with new data
@@ -116,4 +122,48 @@ async function fetchInstrumentStatus(exchange) {
     });
 
     return statusMapping;
+}
+
+function updateLastTradeDisplay(exchange, timestamp) {
+    const relativeTime = timeSince(new Date(timestamp * 1000));
+    let badgeClass = 'badge ';
+
+    // Determine badge color based on recency
+    const seconds = Math.floor((new Date() - new Date(timestamp * 1000)) / 1000);
+    if (seconds < 1800) { // Less than 30 minutes
+        badgeClass += 'badge-success';
+    } else if (seconds < 3600) { // Less than 1 hours
+        badgeClass += 'badge-info';
+    } else if (seconds < 86400) { // Less than 1 day
+        badgeClass += 'badge-warning';
+    } else {
+        badgeClass += 'badge-danger';
+    }
+
+    const formattedExchange = toTitleCase(exchange);
+    document.getElementById('lastTradeInfo').innerHTML = `<h3>${formattedExchange} - Last Trade: <span class="${badgeClass}">${relativeTime}</span></h3>`;
+
+}
+
+function timeSince(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    let interval = seconds / 31536000;
+
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " minutes ago";
+
+    return "Just Now";
+}
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
