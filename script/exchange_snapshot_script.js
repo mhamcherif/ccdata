@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 async function fetchData() {
-    var exchange = document.getElementById('exchangeInput').value;
+    var exchange = document.getElementById('exchangeInput').value.trim().toLowerCase();
 
     // fetch and create statusMapping
     const statusMapping = await fetchInstrumentStatus(exchange); // Fetch and process instrument status
@@ -35,6 +35,7 @@ function populateTable(data, statusMapping) {
             const oneHour = 3600000; // One hour in milliseconds
             const oneMonth = 2629743000; // One month in milliseconds
             let flag = '';
+            let instrument = '';
 
             // Check if status is RETIRED and Last Update TS is within the last hour
             if (status === 'RETIRED' && (currentTime - lastUpdateTS) <= oneHour) {
@@ -43,8 +44,11 @@ function populateTable(data, statusMapping) {
             } else if (status === 'ACTIVE' && (currentTime - lastUpdateTS) >= oneMonth) {
                 flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
             }
+            //
+            instrument = `<a href="https://data-api.cryptocompare.com/spot/v1/latest/tick?market=${fields[1].toLowerCase()}&instruments=${instrumentKey}&apply_mapping=true&groups=ID,MAPPING,VALUE,LAST_UPDATE,LAST_PROCESSED,CURRENT_WEEK,CURRENT_MONTH" target="_blank">${instrumentKey}</a>`;
             return [
                 fields[1], // Market
+                instrument, // Mapped Instrument: Base-Quote = fields[2]-fields[3]
                 fields[2], // Base
                 fields[3], // Quote
                 fields[5], // Price
@@ -58,6 +62,7 @@ function populateTable(data, statusMapping) {
         }),
         "columns": [
             { "title": "Market" },
+            { "title": "Instrument" },
             { "title": "Base" },
             { "title": "Quote" },
             { "title": "Price" },
