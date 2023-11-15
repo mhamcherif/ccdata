@@ -1,14 +1,39 @@
-// List of exchanges to loop through
-const exchanges = ['Bitstamp', 'BitTrex', 'OKCoin', 'Kraken', 'Bitfinex', 'Cexio', 'Coinbase', 'itBit', 'Gemini', 'Exmo', 'Korbit', 'BTCMarkets', 'Coincheck', 'Bitso', 'bitFlyer', 'Luno', 'Coinone', 'Bithumb', 'Binance', 'Lykke', 'HuobiPro', 'OKEX', 'Gateio', 'Kucoin', 'BitBank', 'CoinEx', 'Upbit', 'IndependentReserve', 'Bitmex', 'CoinJar', 'P2PB2B', 'Bitkub', 'NDAX', 'DigiFinex', 'bybit', 'huobijapan', 'huobikorea', 'gopax', 'binanceusa', 'bitflyerus', 'bitflyereu', 'lmax', 'blockchaincom', 'indodax', 'bitpanda', 'etoro', 'currency', 'bequant', 'bithumbglobal', 'btse', 'bitbuy', 'crosstower', 'cryptodotcom', 'erisx', 'mexc', 'bullish', 'bitget'];
+// Function to fetch exchanges with grades
+async function getExchangesWithGrades(grades) {
+    const url = "https://min-api.cryptocompare.com/data/exchanges/general";
+    try {
+        // Include appropriate headers if required
+        const response = await fetch(url); // Add headers { headers: /* your headers here */ }
+        const data = await response.json();
 
-// Function to fetch data for each exchange and update the table
-async function fetchDataForExchanges() {
-    for (const exchange of exchanges) {
+        return Object.values(data.Data)
+            .filter(item => grades.includes(item.Grade))
+            .map(item => ({ exchange: item.InternalName, grade: item.Grade }));
+    } catch (error) {
+        console.error('Error fetching exchange data:', error);
+        return [];
+    }
+}
+
+// Function to fetch data for exchanges based on selected grades and update the table
+async function fetchDataForSelectedGrades() {
+    // Get selected grades from checkboxes
+    const selectedGrades = Array.from(document.querySelectorAll('#gradeSelection .form-check-input:checked'))
+        .map(input => input.value);
+
+    // Fetch exchanges based on selected grades
+    const exchangesWithGrades = await getExchangesWithGrades(selectedGrades);
+
+    // Clear existing table data
+    document.querySelector('#cryptoTable tbody').innerHTML = '';
+
+    // Fetch data for each exchange
+    for (const { exchange, grade } of exchangesWithGrades) {
         try {
             const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
             const response = await fetch(url);
             const data = await response.json();
-            updateTable(exchange, data.Data);
+            updateTable(exchange, grade, data.Data);
         } catch (error) {
             console.error(`Error fetching data for ${exchange}:`, error);
         }
@@ -16,11 +41,10 @@ async function fetchDataForExchanges() {
 }
 
 // Function to update the table with fetched data
-function updateTable(exchange, data) {
+function updateTable(exchange, grade, data) {
     const tableBody = document.getElementById('cryptoTable').getElementsByTagName('tbody')[0];
 
     if (data && data.length > 0) {
-        // Find the trade with the most recent 'mostLastTradeTs'
         const mostRecentTrade = data.reduce((prev, current) => {
             const prevTs = prev.split('~')[6];
             const currentTs = current.split('~')[6];
@@ -30,16 +54,17 @@ function updateTable(exchange, data) {
         const mostLastTradeTs = mostRecentTrade.split('~')[6];
         const relativeTime = getRelativeTime(mostLastTradeTs);
 
-        // Create a new row and cells
         const newRow = tableBody.insertRow();
         const cell1 = newRow.insertCell(0);
         const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2); // New cell for grade
 
-        // Update cell content
         cell1.textContent = exchange;
-        cell2.innerHTML = relativeTime; // Changed from textContent to innerHTML
+        cell2.innerHTML = relativeTime;
+        cell3.textContent = grade; // Display the grade
     }
 }
+
 
 // Function to determine badge class based on time difference
 function getBadgeClass(differenceInSeconds) {
@@ -76,5 +101,8 @@ function getRelativeTime(timestamp) {
     return `<span class="${getBadgeClass(difference)}">${timeString}</span>`;
 }
 
-// Call the function to fetch and display data
-fetchDataForExchanges();
+// Event listener for the "Fetch Exchanges" button
+document.getElementById('fetchExchanges').addEventListener('click', fetchDataForSelectedGrades);
+
+// Initial fetch with default grades
+fetchDataForSelectedGrades();
