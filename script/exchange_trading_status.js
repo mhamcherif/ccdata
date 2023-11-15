@@ -15,29 +15,73 @@ async function getExchangesWithGrades(grades) {
     }
 }
 
+// Function to update the summary table
+function updateSummaryTable(exchanges) {
+    const summarySection = document.getElementById('summarySection');
+    const summaryBody = document.getElementById('summaryTable').getElementsByTagName('tbody')[0];
+    summaryBody.innerHTML = ''; // Clear existing summary data
+
+    let hasSummaryData = false;
+
+    exchanges.forEach(({ exchange, grade, data }) => {
+        const mostLastTradeTs = data.split('~')[6];
+        const relativeTime = getRelativeTime(mostLastTradeTs);
+        const badgeClass = getBadgeClass(Math.floor((new Date() - new Date(mostLastTradeTs * 1000)) / 1000));
+
+        if (badgeClass.includes('warning') || badgeClass.includes('danger')) {
+            hasSummaryData = true;
+            const newRow = summaryBody.insertRow();
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            //const cell4 = newRow.insertCell(3); // New cell for status
+
+            cell1.textContent = exchange;
+            cell2.innerHTML = relativeTime;
+            cell3.textContent = grade;
+            //cell4.innerHTML = `<span class="${badgeClass}">${badgeClass.split('-')[2]}</span>`; // Display the status
+        }
+    });
+
+    // Toggle the visibility of the summary section based on data
+    summarySection.style.display = hasSummaryData ? 'block' : 'none';
+}
+
 // Function to fetch data for exchanges based on selected grades and update the table
+// Modified fetchDataForSelectedGrades function
 async function fetchDataForSelectedGrades() {
-    // Get selected grades from checkboxes
     const selectedGrades = Array.from(document.querySelectorAll('#gradeSelection .form-check-input:checked'))
         .map(input => input.value);
 
-    // Fetch exchanges based on selected grades
     const exchangesWithGrades = await getExchangesWithGrades(selectedGrades);
 
-    // Clear existing table data
     document.querySelector('#cryptoTable tbody').innerHTML = '';
+    document.querySelector('#summaryTable tbody').innerHTML = ''; // Clear existing summary data
 
-    // Fetch data for each exchange
+    let summaryExchanges = [];
+
     for (const { exchange, grade } of exchangesWithGrades) {
         try {
             const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
             const response = await fetch(url);
             const data = await response.json();
-            updateTable(exchange, grade, data.Data);
+
+            if (data && data.Data && data.Data.length > 0) {
+                const mostRecentTrade = data.Data.reduce((prev, current) => {
+                    const prevTs = prev.split('~')[6];
+                    const currentTs = current.split('~')[6];
+                    return (prevTs > currentTs) ? prev : current;
+                });
+
+                updateTable(exchange, grade, data.Data);
+                summaryExchanges.push({ exchange, grade, data: mostRecentTrade });
+            }
         } catch (error) {
             console.error(`Error fetching data for ${exchange}:`, error);
         }
     }
+
+    updateSummaryTable(summaryExchanges);
 }
 
 // Function to update the table with fetched data
