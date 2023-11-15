@@ -57,6 +57,7 @@ async function fetchDataForSelectedGrades() {
 
     document.querySelector('#cryptoTable tbody').innerHTML = '';
     document.querySelector('#summaryTable tbody').innerHTML = ''; // Clear existing summary data
+    document.querySelector('#summarySection').style.display = 'none'; // Hide the summary section
 
     let summaryExchanges = [];
 
@@ -133,14 +134,23 @@ function getRelativeTime(timestamp) {
     if (difference < 60) {
         timeString = `Just now`;
     } else if (difference < 3600) {
-        timeString = `${Math.floor(difference / 60)} minutes ago`;
+        const minutes = Math.floor(difference / 60);
+        // Use singular for 1 e.g. 1 minute
+        timeString = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else if (difference < 86400) {
-        timeString = `${Math.floor(difference / 3600)} hours ago`;
+        const hours = Math.floor(difference / 3600);
+        timeString = `${hours} hour${hours > 1 ? 's' : ''} ago`;
     } else if (difference < 2629743) {
-        timeString = `${Math.floor(difference / 86400)} days ago`;
+        const days = Math.floor(difference / 86400);
+        timeString = `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (difference < 31536000) {
+        const months = Math.floor(difference / 2629743);
+        timeString = `${months} month${months > 1 ? 's' : ''} ago`;
     } else {
-        timeString = `${Math.floor(difference / 2629743)} months ago`;
+        const years = Math.floor(difference / 31536000);
+        timeString = `${years} year${years > 1 ? 's' : ''} ago`;
     }
+
 
     return `<span class="${getBadgeClass(difference)}">${timeString}</span>`;
 }
