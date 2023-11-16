@@ -47,42 +47,85 @@ function updateSummaryTable(exchanges) {
 }
 
 // Function to fetch data for exchanges based on selected grades and update the table
-// Modified fetchDataForSelectedGrades function
 async function fetchDataForSelectedGrades() {
+    // Show loading message
+    document.getElementById('loadingMessage').style.display = 'block';
+
     const selectedGrades = Array.from(document.querySelectorAll('#gradeSelection .form-check-input:checked'))
         .map(input => input.value);
 
     const exchangesWithGrades = await getExchangesWithGrades(selectedGrades);
 
     document.querySelector('#cryptoTable tbody').innerHTML = '';
-    document.querySelector('#summaryTable tbody').innerHTML = ''; // Clear existing summary data
-    document.querySelector('#summarySection').style.display = 'none'; // Hide the summary section
+    document.querySelector('#summaryTable tbody').innerHTML = '';
+    document.querySelector('#summarySection').style.display = 'none';
 
     let summaryExchanges = [];
 
-    for (const { exchange, grade } of exchangesWithGrades) {
-        try {
-            const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
-            const response = await fetch(url);
-            const data = await response.json();
+    // Prepare all fetch promises
+    const fetchPromises = exchangesWithGrades.map(({ exchange, grade }) => {
+        const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
+        return fetch(url).then(response => response.json().then(data => ({ exchange, grade, data })));
+    });
 
-            if (data && data.Data && data.Data.length > 0) {
-                const mostRecentTrade = data.Data.reduce((prev, current) => {
-                    const prevTs = prev.split('~')[6];
-                    const currentTs = current.split('~')[6];
-                    return (prevTs > currentTs) ? prev : current;
-                });
+    // Execute all promises in parallel
+    const results = await Promise.all(fetchPromises);
 
-                updateTable(exchange, grade, data.Data);
-                summaryExchanges.push({ exchange, grade, data: mostRecentTrade });
-            }
-        } catch (error) {
-            console.error(`Error fetching data for ${exchange}:`, error);
+    for (const { exchange, grade, data } of results) {
+        if (data && data.Data && data.Data.length > 0) {
+            const mostRecentTrade = data.Data.reduce((prev, current) => {
+                const prevTs = prev.split('~')[6];
+                const currentTs = current.split('~')[6];
+                return (prevTs > currentTs) ? prev : current;
+            });
+
+            updateTable(exchange, grade, data.Data);
+            summaryExchanges.push({ exchange, grade, data: mostRecentTrade });
         }
     }
 
+    // Hide loading message
+    document.getElementById('loadingMessage').style.display = 'none';
+
     updateSummaryTable(summaryExchanges);
 }
+
+// Modified fetchDataForSelectedGrades function
+// async function fetchDataForSelectedGrades() {
+//     const selectedGrades = Array.from(document.querySelectorAll('#gradeSelection .form-check-input:checked'))
+//         .map(input => input.value);
+
+//     const exchangesWithGrades = await getExchangesWithGrades(selectedGrades);
+
+//     document.querySelector('#cryptoTable tbody').innerHTML = '';
+//     document.querySelector('#summaryTable tbody').innerHTML = ''; // Clear existing summary data
+//     document.querySelector('#summarySection').style.display = 'none'; // Hide the summary section
+
+//     let summaryExchanges = [];
+
+//     for (const { exchange, grade } of exchangesWithGrades) {
+//         try {
+//             const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
+//             const response = await fetch(url);
+//             const data = await response.json();
+
+//             if (data && data.Data && data.Data.length > 0) {
+//                 const mostRecentTrade = data.Data.reduce((prev, current) => {
+//                     const prevTs = prev.split('~')[6];
+//                     const currentTs = current.split('~')[6];
+//                     return (prevTs > currentTs) ? prev : current;
+//                 });
+
+//                 updateTable(exchange, grade, data.Data);
+//                 summaryExchanges.push({ exchange, grade, data: mostRecentTrade });
+//             }
+//         } catch (error) {
+//             console.error(`Error fetching data for ${exchange}:`, error);
+//         }
+//     }
+
+//     updateSummaryTable(summaryExchanges);
+// }
 
 // Function to update the table with fetched data
 function updateTable(exchange, grade, data) {
