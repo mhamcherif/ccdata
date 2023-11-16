@@ -218,6 +218,63 @@ function getRelativeTime(timestamp, grade) {
     return `<span class="${getBadgeClass(difference, grade)}">${timeString}</span>`;
 }
 
+// Function to save auto-refresh interval
+function saveAutoRefreshPreference() {
+    const autoRefreshInterval = document.getElementById('autoRefresh').value;
+    sessionStorage.setItem('autoRefreshInterval', autoRefreshInterval);
+    setupAutoRefresh(); // Update the auto-refresh setup
+}
+
+// Function to save user preferences
+function saveUserPreferences() {
+    const selectedGrades = Array.from(document.querySelectorAll('#gradeSelection .form-check-input:checked'))
+        .map(input => input.value);
+    sessionStorage.setItem('selectedGrades', JSON.stringify(selectedGrades));
+}
+
+// Function to load and apply user preferences
+function applyUserPreferences() {
+    const selectedGrades = JSON.parse(sessionStorage.getItem('selectedGrades'));
+    if (selectedGrades) {
+        document.querySelectorAll('#gradeSelection .form-check-input').forEach(input => {
+            input.checked = selectedGrades.includes(input.value);
+        });
+        fetchDataForSelectedGrades(); // Fetch data with these preferences
+    }
+}
+
+function setupAutoRefresh() {
+    const savedInterval = sessionStorage.getItem('autoRefreshInterval');
+    const refreshInterval = savedInterval ? parseInt(savedInterval, 10) * 1000 : 0;
+
+    if (refreshInterval > 0) {
+        setTimeout(() => {
+            saveUserPreferences(); // Save preferences before refreshing
+            location.reload(); // Refresh the page
+        }, refreshInterval);
+    }
+}
+
+// Function to apply auto-refresh preference on page load
+function applyAutoRefreshPreference() {
+    const savedInterval = sessionStorage.getItem('autoRefreshInterval');
+    if (savedInterval) {
+        document.getElementById('autoRefresh').value = savedInterval;
+        setupAutoRefresh();
+    }
+}
+
+// Event listeners for grade selection changes and refresh option changes
+document.querySelectorAll('#gradeSelection .form-check-input').forEach(input => {
+    input.addEventListener('change', saveUserPreferences);
+});
+
+document.getElementById('autoRefresh').addEventListener('change', saveAutoRefreshPreference);
+
+// On page load
+applyUserPreferences(); // Apply saved preferences
+applyAutoRefreshPreference();
+
 // Event listener for the "Fetch Exchanges" button
 document.getElementById('fetchExchanges').addEventListener('click', fetchDataForSelectedGrades);
 

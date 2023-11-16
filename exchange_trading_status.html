@@ -15,7 +15,14 @@
 <body>
     <div class="container">
         <h1 class="mt-4 mb-3">Market Trading Status</h1>
-
+        <div id="refreshOptions">
+            <label for="autoRefresh">Auto-refresh every:</label>
+            <select id="autoRefresh">
+                <option value="0">Off</option>
+                <option value="300">5 minutes</option>
+                <option value="600">10 minutes</option>
+            </select>
+        </div>
         <div id="gradeSelection">
             <!-- Checkboxes for grade selection -->
             <div class="form-check form-check-inline">
