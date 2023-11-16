@@ -1,13 +1,14 @@
 // Function to fetch exchanges with grades
 async function getExchangesWithGrades(grades) {
     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
+    const exclusions = [] // List of exchanges to exclude e.g. ['etoro', 'bithumbglobal', 'btse', 'bitbuy'];
+
     try {
-        // Include appropriate headers if required
-        const response = await fetch(url); // Add headers { headers: /* your headers here */ }
+        const response = await fetch(url); // Add headers if required
         const data = await response.json();
 
         return Object.values(data.Data)
-            .filter(item => grades.includes(item.Grade))
+            .filter(item => grades.includes(item.Grade) && !exclusions.includes(item.InternalName.toLowerCase()))
             .map(item => ({ exchange: item.InternalName, grade: item.Grade }));
     } catch (error) {
         console.error('Error fetching exchange data:', error);
@@ -25,8 +26,8 @@ function updateSummaryTable(exchanges) {
 
     exchanges.forEach(({ exchange, grade, data }) => {
         const mostLastTradeTs = data.split('~')[6];
-        const relativeTime = getRelativeTime(mostLastTradeTs);
-        const badgeClass = getBadgeClass(Math.floor((new Date() - new Date(mostLastTradeTs * 1000)) / 1000));
+        const relativeTime = getRelativeTime(mostLastTradeTs, grade);
+        const badgeClass = getBadgeClass(Math.floor((new Date() - new Date(mostLastTradeTs * 1000)) / 1000), grade);
 
         if (badgeClass.includes('warning') || badgeClass.includes('danger')) {
             hasSummaryData = true;
@@ -34,12 +35,10 @@ function updateSummaryTable(exchanges) {
             const cell1 = newRow.insertCell(0);
             const cell2 = newRow.insertCell(1);
             const cell3 = newRow.insertCell(2);
-            //const cell4 = newRow.insertCell(3); // New cell for status
 
             cell1.textContent = exchange;
             cell2.innerHTML = relativeTime;
             cell3.textContent = grade;
-            //cell4.innerHTML = `<span class="${badgeClass}">${badgeClass.split('-')[2]}</span>`; // Display the status
         }
     });
 
@@ -97,7 +96,7 @@ function updateTable(exchange, grade, data) {
         });
 
         const mostLastTradeTs = mostRecentTrade.split('~')[6];
-        const relativeTime = getRelativeTime(mostLastTradeTs);
+        const relativeTime = getRelativeTime(mostLastTradeTs, grade);
 
         const newRow = tableBody.insertRow();
         const cell1 = newRow.insertCell(0);
@@ -110,22 +109,43 @@ function updateTable(exchange, grade, data) {
     }
 }
 
+// Function to determine badge class based on time difference and grade
+function getBadgeClass(differenceInSeconds, grade) {
+    const thresholds = {
+        // ------------------------ Top Tier [5-10] --------------------------------
+        // // 5 minutes for warning, 10 minutes for danger
+        'AA': { warning: 300, danger: 600 },
+        'A': { warning: 300, danger: 600 },
+        // ------------------------ Second Tier [10-20] -------------------------------
+        // 10 minutes for warning, 20 minutes for danger
+        'BB': { warning: 600, danger: 1200 },
+        'B': { warning: 600, danger: 1200 },
+        // ------------------------ Third Tier [15-30] -------------------------------
+        // 15 minutes for warning, 30 minutes for danger
+        'C': { warning: 900, danger: 1800 },
+        // ------------------------- Lower Tier [20-60]-------------------------------
+        // 20 minutes for warning, 60 minutes for danger
+        'D': { warning: 1200, danger: 3600 },
+        'E': { warning: 1200, danger: 3600 },
+        'F': { warning: 1200, danger: 3600 },
+    };
 
-// Function to determine badge class based on time difference
-function getBadgeClass(differenceInSeconds) {
-    if (differenceInSeconds < 1800) { // Less than 30 minutes
+    // Default threshold if grade not in the list -> 5 years for warning, 10 years for danger for no grade
+    const defaultThreshold = { warning: 157784630, danger: 315569260 };
+
+    const gradeThreshold = thresholds[grade] || defaultThreshold;
+
+    if (differenceInSeconds < gradeThreshold.warning) {
         return 'badge badge-success';
-    } else if (differenceInSeconds < 3600) { // Less than 1 hour
-        return 'badge badge-info';
-    } else if (differenceInSeconds < 86400) { // Less than 1 day
+    } else if (differenceInSeconds < gradeThreshold.danger) {
         return 'badge badge-warning';
-    } else { // Over 1 day
+    } else {
         return 'badge badge-danger';
     }
 }
 
 // Updated function to convert timestamp to relative time string with badge
-function getRelativeTime(timestamp) {
+function getRelativeTime(timestamp, grade) {
     const tradeDate = new Date(timestamp * 1000);
     const now = new Date();
     const difference = Math.floor((now - tradeDate) / 1000);
@@ -152,7 +172,7 @@ function getRelativeTime(timestamp) {
     }
 
 
-    return `<span class="${getBadgeClass(difference)}">${timeString}</span>`;
+    return `<span class="${getBadgeClass(difference, grade)}">${timeString}</span>`;
 }
 
 // Event listener for the "Fetch Exchanges" button
