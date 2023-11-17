@@ -1,20 +1,20 @@
-// // Function to fetch exchanges with grades
-// async function getExchangesWithGrades(grades) {
-//     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
-//     const exclusions = [] // List of exchanges to exclude e.g. ['etoro', 'bithumbglobal', 'btse', 'bitbuy'];
+//async function fetchCryptopianKey() {
+function fetchAuthKey() {
+    const cookiesArray = document.cookie.split(';');
+    let cookieValue = ''; // Initialize as empty string
 
-//     try {
-//         const response = await fetch(url); // Add headers if required
-//         const data = await response.json();
+    cookiesArray.some(cookie => {
+        const [name, value] = cookie.split('=').map(c => c.trim());
+        if (name === 'auth_key') {
+            cookieValue = value;
+            return true; // Break out of some() once the auth_key is found
+        }
+        return false; // Continue searching
+    });
 
-//         return Object.values(data.Data)
-//             .filter(item => grades.includes(item.Grade) && !exclusions.includes(item.InternalName.toLowerCase()))
-//             .map(item => ({ exchange: item.InternalName, grade: item.Grade }));
-//     } catch (error) {
-//         console.error('Error fetching exchange data:', error);
-//         return [];
-//     }
-// }
+    return cookieValue; // Will return the value if found, or an empty string if not
+}
+
 
 async function getExchangesWithGrades(grades) {
     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
@@ -38,7 +38,16 @@ async function getExchangesWithGrades(grades) {
     const shouldExclude = document.getElementById('excludeToggle').checked;
 
     try {
-        const exchangeResponse = await fetch(url); // Fetch exchanges
+        // Get Auth Key
+        const authKey = fetchAuthKey();
+        // if (!authKey) {
+        //     console.log('Failed to retrieve Auth key.');
+        // }
+        const exchangeResponse = await fetch(url, {
+            headers: new Headers({
+                'Authorization': `Apikey ${authKey}`
+            })
+        }); // Fetch exchanges
         const data = await exchangeResponse.json();
 
         let exclusions = [];
@@ -105,7 +114,13 @@ async function fetchDataForSelectedGrades() {
     // Prepare all fetch promises
     const fetchPromises = exchangesWithGrades.map(({ exchange, grade }) => {
         const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
-        return fetch(url).then(response => response.json().then(data => ({ exchange, grade, data })));
+        // Get Auth Key
+        const authKey = fetchAuthKey();
+        return fetch(url, {
+            headers: new Headers({
+                'Authorization': `Apikey ${authKey}`
+            })
+        }).then(response => response.json().then(data => ({ exchange, grade, data })));
     });
 
     // Execute all promises in parallel
