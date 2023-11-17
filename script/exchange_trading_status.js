@@ -18,17 +18,33 @@
 
 async function getExchangesWithGrades(grades) {
     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
-    const exclusionsUrl = "exclusions.json"; // Path to your exclusions JSON file
-    // const shouldExclude = document.getElementById('excludeToggle').checked;
+    const exclusions_list = [
+        "yobit",
+        "therocktrading",
+        "tokenomy",
+        "bkex",
+        "liqnet",
+        "cointiger",
+        "zbg",
+        "coinfield",
+        "paribu",
+        "etoro",
+        "bitfex",
+        "bithumbglobal",
+        "btse",
+        "bitbuy",
+        "crosstower"
+    ];
+    const shouldExclude = document.getElementById('excludeToggle').checked;
 
     try {
         const exchangeResponse = await fetch(url); // Fetch exchanges
         const data = await exchangeResponse.json();
 
         let exclusions = [];
-        if (true) { // shouldExclude
-            const exclusionsResponse = await fetch(exclusionsUrl); // Fetch exclusions
-            exclusions = await exclusionsResponse.json();
+
+        if (shouldExclude) {
+            exclusions = exclusions_list;
         }
 
         return Object.values(data.Data)
@@ -113,43 +129,6 @@ async function fetchDataForSelectedGrades() {
 
     updateSummaryTable(summaryExchanges);
 }
-
-// Modified fetchDataForSelectedGrades function
-// async function fetchDataForSelectedGrades() {
-//     const selectedGrades = Array.from(document.querySelectorAll('#gradeSelection .form-check-input:checked'))
-//         .map(input => input.value);
-
-//     const exchangesWithGrades = await getExchangesWithGrades(selectedGrades);
-
-//     document.querySelector('#cryptoTable tbody').innerHTML = '';
-//     document.querySelector('#summaryTable tbody').innerHTML = ''; // Clear existing summary data
-//     document.querySelector('#summarySection').style.display = 'none'; // Hide the summary section
-
-//     let summaryExchanges = [];
-
-//     for (const { exchange, grade } of exchangesWithGrades) {
-//         try {
-//             const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
-//             const response = await fetch(url);
-//             const data = await response.json();
-
-//             if (data && data.Data && data.Data.length > 0) {
-//                 const mostRecentTrade = data.Data.reduce((prev, current) => {
-//                     const prevTs = prev.split('~')[6];
-//                     const currentTs = current.split('~')[6];
-//                     return (prevTs > currentTs) ? prev : current;
-//                 });
-
-//                 updateTable(exchange, grade, data.Data);
-//                 summaryExchanges.push({ exchange, grade, data: mostRecentTrade });
-//             }
-//         } catch (error) {
-//             console.error(`Error fetching data for ${exchange}:`, error);
-//         }
-//     }
-
-//     updateSummaryTable(summaryExchanges);
-// }
 
 // Function to update the table with fetched data
 function updateTable(exchange, grade, data) {
@@ -238,7 +217,6 @@ function getRelativeTime(timestamp, grade) {
         timeString = `${years} year${years > 1 ? 's' : ''} ago`;
     }
 
-
     return `<span class="${getBadgeClass(difference, grade)}">${timeString}</span>`;
 }
 
@@ -288,12 +266,18 @@ function applyAutoRefreshPreference() {
     }
 }
 
-// Event listeners for grade selection changes and refresh option changes
+// Event listeners for grade selection changes
 document.querySelectorAll('#gradeSelection .form-check-input').forEach(input => {
     input.addEventListener('change', saveUserPreferences);
 });
-
+// Event listeners for  refresh option changes
 document.getElementById('autoRefresh').addEventListener('change', saveAutoRefreshPreference);
+
+// Event listener to the checkbox to trigger a data refresh when its state changes:
+document.getElementById('excludeToggle').addEventListener('change', () => {
+    saveUserPreferences(); // Save current user preferences
+    // fetchDataForSelectedGrades(); // Fetch data again with new exclusion settings
+});
 
 // On page load
 applyUserPreferences(); // Apply saved preferences
