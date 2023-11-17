@@ -26,7 +26,7 @@ async function getExchangesWithGrades(grades) {
         const data = await exchangeResponse.json();
 
         let exclusions = [];
-        if (true) { //shouldExclude
+        if (true) { // shouldExclude
             const exclusionsResponse = await fetch(exclusionsUrl); // Fetch exclusions
             exclusions = await exclusionsResponse.json();
         }
