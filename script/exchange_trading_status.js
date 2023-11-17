@@ -1,21 +1,3 @@
-//async function fetchCryptopianKey() {
-function fetchAuthKey() {
-    const cookiesArray = document.cookie.split(';');
-    let cookieValue = ''; // Initialize as empty string
-
-    cookiesArray.some(cookie => {
-        const [name, value] = cookie.split('=').map(c => c.trim());
-        if (name === 'auth_key') {
-            cookieValue = value;
-            return true; // Break out of some() once the auth_key is found
-        }
-        return false; // Continue searching
-    });
-
-    return cookieValue; // Will return the value if found, or an empty string if not
-}
-
-
 async function getExchangesWithGrades(grades) {
     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
     const exclusions_list = [
@@ -39,10 +21,8 @@ async function getExchangesWithGrades(grades) {
 
     try {
         // Get Auth Key
-        const authKey = fetchAuthKey();
-        // if (!authKey) {
-        //     console.log('Failed to retrieve Auth key.');
-        // }
+        const authKey = '';
+
         const exchangeResponse = await fetch(url, {
             headers: new Headers({
                 'Authorization': `Apikey ${authKey}`
@@ -115,7 +95,7 @@ async function fetchDataForSelectedGrades() {
     const fetchPromises = exchangesWithGrades.map(({ exchange, grade }) => {
         const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
         // Get Auth Key
-        const authKey = fetchAuthKey();
+        const authKey = '';
         return fetch(url, {
             headers: new Headers({
                 'Authorization': `Apikey ${authKey}`
