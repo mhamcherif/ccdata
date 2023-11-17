@@ -1,14 +1,38 @@
-// Function to fetch exchanges with grades
+// // Function to fetch exchanges with grades
+// async function getExchangesWithGrades(grades) {
+//     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
+//     const exclusions = [] // List of exchanges to exclude e.g. ['etoro', 'bithumbglobal', 'btse', 'bitbuy'];
+
+//     try {
+//         const response = await fetch(url); // Add headers if required
+//         const data = await response.json();
+
+//         return Object.values(data.Data)
+//             .filter(item => grades.includes(item.Grade) && !exclusions.includes(item.InternalName.toLowerCase()))
+//             .map(item => ({ exchange: item.InternalName, grade: item.Grade }));
+//     } catch (error) {
+//         console.error('Error fetching exchange data:', error);
+//         return [];
+//     }
+// }
+
 async function getExchangesWithGrades(grades) {
     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
-    const exclusions = [] // List of exchanges to exclude e.g. ['etoro', 'bithumbglobal', 'btse', 'bitbuy'];
+    const exclusionsUrl = "exclusions.json"; // Path to your exclusions JSON file
+    // const shouldExclude = document.getElementById('excludeToggle').checked;
 
     try {
-        const response = await fetch(url); // Add headers if required
-        const data = await response.json();
+        const exchangeResponse = await fetch(url); // Fetch exchanges
+        const data = await exchangeResponse.json();
+
+        let exclusions = [];
+        if (true) { //shouldExclude
+            const exclusionsResponse = await fetch(exclusionsUrl); // Fetch exclusions
+            exclusions = await exclusionsResponse.json();
+        }
 
         return Object.values(data.Data)
-            .filter(item => grades.includes(item.Grade) && !exclusions.includes(item.InternalName.toLowerCase()))
+            .filter(item => grades.includes(item.Grade) && (!shouldExclude || !exclusions.includes(item.InternalName.toLowerCase())))
             .map(item => ({ exchange: item.InternalName, grade: item.Grade }));
     } catch (error) {
         console.error('Error fetching exchange data:', error);
