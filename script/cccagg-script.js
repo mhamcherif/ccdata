@@ -9,8 +9,9 @@ function check_cccagg_pair() {
 
 
     get_coin_info(fsym)
-
-    fetch(cccagg_url)
+    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
+    fetch(cccagg_url, { headers: headers })
         .then(response => response.json())
         .then(response => {
             if (Object.keys(response.Data).length === 0) {
@@ -118,11 +119,13 @@ function clear_result() {
 }
 
 function get_exchanges(fsym, tsym, callback) {
+    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
     // Construct the API endpoint URL with the given parameters
     const exchanges_url = `https://min-api.cryptocompare.com/data/v4/all/exchanges?fsym=${fsym}`;
 
     // Make a GET request to the API endpoint using the Fetch API
-    fetch(exchanges_url)
+    fetch(exchanges_url, { headers: headers })
         .then(response => response.json())
         .then(data => {
             // Extract the list of exchanges that support the given pair
@@ -150,9 +153,11 @@ function get_exchanges(fsym, tsym, callback) {
 
 
 function get_coin_info(fsym) {
+    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
     const coinlist_url = `https://min-api.cryptocompare.com/data/all/coinlist?fsym=${fsym}`;
 
-    fetch(coinlist_url)
+    fetch(coinlist_url, { headers: headers })
         .then((response) => {
             if (response.status !== 200) {
                 console.log(`Error: ${response.status}`);
@@ -184,7 +189,10 @@ function get_coin_info(fsym) {
 }
 
 function getLastUpdate(fsym, tsym) {
-    return fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${fsym}&tsyms=${tsym}&tryConversion=false&e=CCCAGG`)
+    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${fsym}&tsyms=${tsym}&tryConversion=false&e=CCCAGG`
+    return fetch(url, { headers: headers })
         .then(resp => resp.json())
         .then(resp => resp.DISPLAY[fsym][tsym].LASTUPDATE)
         .catch(() => "");
