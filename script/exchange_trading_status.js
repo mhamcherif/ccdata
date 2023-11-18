@@ -20,14 +20,10 @@ async function getExchangesWithGrades(grades) {
     const shouldExclude = document.getElementById('excludeToggle').checked;
 
     try {
-        // Get Auth Key
-        const authKey = '';
+        const apiKey = localStorage.getItem('apiKey') || '';
+        const headers = { 'Authorization': `Apikey ${apiKey}` };
 
-        const exchangeResponse = await fetch(url, {
-            headers: new Headers({
-                'Authorization': `Apikey ${authKey}`
-            })
-        }); // Fetch exchanges
+        const exchangeResponse = await fetch(url, { headers: headers }); // Fetch exchanges
         const data = await exchangeResponse.json();
 
         let exclusions = [];
@@ -93,14 +89,11 @@ async function fetchDataForSelectedGrades() {
 
     // Prepare all fetch promises
     const fetchPromises = exchangesWithGrades.map(({ exchange, grade }) => {
+        const apiKey = localStorage.getItem('apiKey') || '';
+        const headers = { 'Authorization': `Apikey ${apiKey}` };
         const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`;
-        // Get Auth Key
-        const authKey = '';
-        return fetch(url, {
-            headers: new Headers({
-                'Authorization': `Apikey ${authKey}`
-            })
-        }).then(response => response.json().then(data => ({ exchange, grade, data })));
+
+        return fetch(url, { headers: headers }).then(response => response.json().then(data => ({ exchange, grade, data })));
     });
 
     // Execute all promises in parallel
