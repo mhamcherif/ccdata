@@ -9,7 +9,7 @@ function check_cccagg_pair() {
 
 
     get_coin_info(fsym)
-    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const apiKey = localStorage.getItem('apiKey') || '';
     const headers = { 'Authorization': `Apikey ${apiKey}` };
     fetch(cccagg_url, { headers: headers })
         .then(response => response.json())
@@ -119,7 +119,7 @@ function clear_result() {
 }
 
 function get_exchanges(fsym, tsym, callback) {
-    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const apiKey = localStorage.getItem('apiKey') || '';
     const headers = { 'Authorization': `Apikey ${apiKey}` };
     // Construct the API endpoint URL with the given parameters
     const exchanges_url = `https://min-api.cryptocompare.com/data/v4/all/exchanges?fsym=${fsym}`;
@@ -153,7 +153,7 @@ function get_exchanges(fsym, tsym, callback) {
 
 
 function get_coin_info(fsym) {
-    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const apiKey = localStorage.getItem('apiKey') || '';
     const headers = { 'Authorization': `Apikey ${apiKey}` };
     const coinlist_url = `https://min-api.cryptocompare.com/data/all/coinlist?fsym=${fsym}`;
 
@@ -189,7 +189,7 @@ function get_coin_info(fsym) {
 }
 
 function getLastUpdate(fsym, tsym) {
-    const apiKey = sessionStorage.getItem('apiKey') || '';
+    const apiKey = localStorage.getItem('apiKey') || '';
     const headers = { 'Authorization': `Apikey ${apiKey}` };
     const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${fsym}&tsyms=${tsym}&tryConversion=false&e=CCCAGG`
     return fetch(url, { headers: headers })
