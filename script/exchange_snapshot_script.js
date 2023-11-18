@@ -10,11 +10,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 async function fetchData() {
     var exchange = document.getElementById('exchangeInput').value.trim().toLowerCase();
-
+    const apiKey = localStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
     // fetch and create statusMapping
     const statusMapping = await fetchInstrumentStatus(exchange); // Fetch and process instrument status
-
-    const response = await fetch(`https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`);
+    const url = `https://min-api.cryptocompare.com/data/exchange/snapshot?e=${exchange}`
+    const response = await fetch(url, { headers: headers });
     const data = await response.json();
 
     // Find the most recent last trade timestamp
@@ -112,8 +113,10 @@ $(document).ready(function () {
 });
 
 async function fetchInstrumentStatus(exchange) {
+    const apiKey = localStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
     const url = `https://data-api.cryptocompare.com/spot/v1/markets/instruments?market=${exchange}&instrument_status=ACTIVE,IGNORED,RETIRED,EXPIRED`;
-    const response = await fetch(url);
+    const response = await fetch(url, { headers: headers });
     const data = await response.json();
 
     let statusMapping = {};
