@@ -59,7 +59,7 @@ async function check_cccagg_pair() {
                             document.getElementById("result").innerHTML = table;
                         });
                     } else {
-                        // the case of given fsym & tsyms
+                        // the case of given fsym & tsyms.
                         const pairs = [];
                         const availExchanges = []
                         for (const tsym of tsyms) {
