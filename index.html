@@ -88,7 +88,7 @@
             var s = document.createElement("script");
             s.type = "text/javascript";
             s.async = true;
-            var theUrl = baseUrl + 'serve/v1/coin/chartscroller?fsyms=BTC,ETH,SOL,LINK,XRP,DOGE,AVAX,RNDR,YFI,FET,MATIC,TIA,ADA,AIOZ,SHIB,LTC,IMX,XLM,USDC,DOT,ATOM,EOS&tsyms=USD';
+            var theUrl = baseUrl + 'serve/v1/coin/chartscroller?fsyms=BTC,ETH,SOL,LINK,XRP,DOGE,AVAX,RNDR,YFI,FET,MATIC,TIA,ADA,AIOZ,SHIB,LTC,IMX,XLM,DOT,ATOM,EOS,AAVE&tsyms=USD';
             s.src = theUrl + (theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
             embedder.parentNode.appendChild(s);
         })();
