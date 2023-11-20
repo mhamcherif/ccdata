@@ -43,13 +43,21 @@ function populateTable(data, statusMapping) {
             const oneMonth = 2629743000; // One month in milliseconds
             let flag = '';
             let instrument = '';
+            let statusLink = '';
 
             // Check if status is RETIRED and Last Update TS is within the last hour
             if (status === 'RETIRED' && (currentTime - lastUpdateTS) <= oneHour) {
-                flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/retired?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
+                flag = "Attention Needed"
                 // Else check if status is ACTIVE and Last Update TS is over one month ago
             } else if (status === 'ACTIVE' && (currentTime - lastUpdateTS) >= oneMonth) {
-                flag = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">Attention Needed</a>`;
+                flag = "Attention Needed"
+            }
+            // Status Link to Tools
+            if (status === 'RETIRED') {
+                statusLink = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/retired?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">RETIRED</a>`;
+                // Else check if status is ACTIVE and Last Update TS is over one month ago
+            } else if (status === 'ACTIVE') {
+                statusLink = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">ACTIVE</a>`;
             }
             //
             instrument = `<a href="https://data-api.cryptocompare.com/spot/v1/latest/tick?market=${fields[1].toLowerCase()}&instruments=${instrumentKey}&apply_mapping=true&groups=ID,MAPPING,VALUE,LAST_UPDATE,LAST_PROCESSED,CURRENT_WEEK,CURRENT_MONTH" target="_blank">${instrumentKey}</a>`;
@@ -63,7 +71,7 @@ function populateTable(data, statusMapping) {
                 fields[6], // Last Update TS
                 new Date(fields[6] * 1000).toISOString(), //use toLocaleString() to Converte to local time zone
                 fields[9], // Last Trade ID
-                status,  // Instrument Status
+                statusLink,  // Instrument Status
                 flag // Flag
             ];
         }),
