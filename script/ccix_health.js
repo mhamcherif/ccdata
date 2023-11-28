@@ -1,77 +1,77 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const instruments = "BTC-USD,ETH-USD,SOL-USD,XRP-USD,LINK-USD,AVAX-USD,DOGE-USD,BLUR-USD,MATIC-USD,UNI-USD,ADA-USD,RNDR-USD,TIA-USD,FET-USD,LTC-USD,SHIB-USD,AAVE-USD,IMX-USD,DOT-USD,LDO-USD,XLM-USD,YFI-USD,LCX-USD,GRT-USD,SEI-USD";
-    const apiUrl = `https://data-api.cryptocompare.com/index/cc/v1/latest/instrument/metadata?market=ccix&instruments=${instruments}&apply_mapping=true&groups=SOURCE,STATUS`;
+function chunkInstruments(instruments, chunkSize = 25) {
+    let chunks = [];
+    for (let i = 0; i < instruments.length; i += chunkSize) {
+        chunks.push(instruments.slice(i, i + chunkSize).join(','));
+    }
+    return chunks;
+}
+
+async function fetchData(instruments) {
+    const apiKey = localStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
+    const url = `https://data-api.cryptocompare.com/index/cc/v1/latest/instrument/metadata?market=ccix&instruments=${instruments}&apply_mapping=true&groups=SOURCE,STATUS`;
     const tableBody = document.getElementById('table-body');
 
-    async function fetchData() {
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                tableBody.innerHTML = ''; // Clear the table
+    fetch(url, { headers: headers })
+        .then(response => response.json())
+        .then(data => {
+            // tableBody.innerHTML = ''; // Clear the table
 
-                // Iterate through the instruments
-                for (let [instrument, details] of Object.entries(data.Data)) {
-                    details = details.LAST_INDEX_UPDATE_FROM_CALCULATED;
-                    const lastUpdate = getRelativeTime(details.TIMESTAMP);
-                    const components = sortComponentsByPriceLastUpdate(details.METADATA.COMPONENTS);
-                    //const components = Object.entries(details.METADATA.COMPONENTS);
-                    // Get market from "UPDATE_TRIGGERED_BY" e.g. "706~{cryptodotcom~BTC_USD}"
-                    const updateTriggeredBy = details.METADATA.UPDATE_TRIGGERED_BY.split('~{')[1].split('~')[0];
+            // Iterate through the instruments
+            for (let [instrument, details] of Object.entries(data.Data)) {
+                details = details.LAST_INDEX_UPDATE_FROM_CALCULATED;
+                const lastUpdate = getRelativeTime(details.TIMESTAMP);
+                const components = sortComponentsByPriceLastUpdate(details.METADATA.COMPONENTS);
+                // Get market from "UPDATE_TRIGGERED_BY" e.g. "706~{cryptodotcom~BTC_USD}"
+                const updateTriggeredBy = details.METADATA.UPDATE_TRIGGERED_BY.split('~{')[1].split('~')[0];
 
-                    // Create the main row for the instrument
-                    let mainRow = tableBody.insertRow();
-                    let cellInstrument = mainRow.insertCell();
-                    cellInstrument.textContent = instrument;
-                    cellInstrument.setAttribute('data-toggle', 'collapse');
-                    cellInstrument.setAttribute('data-target', `#collapse${instrument}`);
-                    cellInstrument.classList.add('clickable');
+                // Create the main row for the instrument
+                let mainRow = tableBody.insertRow();
+                let cellInstrument = mainRow.insertCell();
+                cellInstrument.textContent = instrument;
+                cellInstrument.setAttribute('data-toggle', 'collapse');
+                cellInstrument.setAttribute('data-target', `#collapse${instrument}`);
+                cellInstrument.classList.add('clickable');
 
-                    let cellUpdateTigerredBy = mainRow.insertCell();
-                    cellUpdateTigerredBy.textContent = updateTriggeredBy;
+                let cellUpdateTigerredBy = mainRow.insertCell();
+                cellUpdateTigerredBy.textContent = updateTriggeredBy;
 
-                    let cellLastUpdate = mainRow.insertCell();
-                    cellLastUpdate.innerHTML = lastUpdate;
+                let cellLastUpdate = mainRow.insertCell();
+                cellLastUpdate.innerHTML = lastUpdate;
 
 
-                    // Insert a new row for the collapsible content
-                    let collapseRow = tableBody.insertRow();
-                    let collapseCell = collapseRow.insertCell();
-                    collapseCell.colSpan = 4;
-                    collapseCell.classList.add('collapse');
-                    collapseCell.id = `collapse${instrument}`;
+                // Insert a new row for the collapsible content
+                let collapseRow = tableBody.insertRow();
+                let collapseCell = collapseRow.insertCell();
+                collapseCell.colSpan = 4;
+                collapseCell.classList.add('collapse');
+                collapseCell.id = `collapse${instrument}`;
 
-                    let componentTable = document.createElement('table');
-                    componentTable.classList.add('table', 'table-dark', 'mb-0'); // Bootstrap classes
+                let componentTable = document.createElement('table');
+                componentTable.classList.add('table', 'table-dark', 'mb-0'); // Bootstrap classes
 
-                    // Fill the component table
-                    // Components have been sorted by price last update
-                    components.forEach(component => {
-                        let market = component.market || key.split('~')[1];
-                        let priceLastUpdate = getRelativeTime(component.priceLastUpdateTS);
+                // Fill the component table
+                // Components have been sorted by price last update
+                components.forEach(component => {
+                    let market = component.market || key.split('~')[1];
+                    let priceLastUpdate = getRelativeTime(component.priceLastUpdateTS);
 
-                        let componentRow = componentTable.insertRow();
-                        let cellMarket = componentRow.insertCell();
-                        let cellPriceLastUpdate = componentRow.insertCell();
+                    let componentRow = componentTable.insertRow();
+                    let cellMarket = componentRow.insertCell();
+                    let cellPriceLastUpdate = componentRow.insertCell();
 
-                        cellMarket.textContent = market;
-                        cellPriceLastUpdate.innerHTML = priceLastUpdate;
-                    });
+                    cellMarket.textContent = market;
+                    cellPriceLastUpdate.innerHTML = priceLastUpdate;
+                });
 
-                    collapseCell.appendChild(componentTable);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                // Handle the error, maybe display a message to the user
-            });
-    }
-
-    // Fetch data when the page loads
-    fetchData();
-
-    // Set up the auto-refresh functionality
-    // ...
-});
+                collapseCell.appendChild(componentTable);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            // Handle the error, maybe display a message to the user
+        });
+}
 
 function sortComponentsByPriceLastUpdate(components) {
     // Convert object to array and extract the keys and values
@@ -120,6 +120,61 @@ fetchTop25Instruments().then(topInstruments => {
     // Further processing or display in your webpage
 });
 
+async function fetchAllIndexUnderlyingPairs() {
+    const apiKey = localStorage.getItem('apiKey') || '';
+    const headers = { 'Authorization': `Apikey ${apiKey}` };
+    const url = 'https://min-api.cryptocompare.com/data/index/underlying/list';
+
+    try {
+        const response = await fetch(url, { headers: headers });
+        const data = await response.json();
+
+        let pairs = new Set();  // Using a Set to store unique pairs
+
+        // Iterate through the Data object
+        for (let indexKey in data.Data) {
+            for (let base in data.Data[indexKey].base) {
+                for (let quote in data.Data[indexKey].base[base].quote) {
+                    pairs.add(`${base}-${quote}`);  // Add pair to the Set
+                }
+            }
+        }
+
+        return Array.from(pairs);  // Convert Set back to Array
+    } catch (error) {
+        console.error('Error fetching unique currency pairs:', error);
+        return []; // Return an empty array in case of error
+    }
+}
+// This func load the data of all the chucks (i.e 1 chunk = 25 instruments at a time) 
+async function loadData(instrumentList) {
+    const instrumentChunks = chunkInstruments(instrumentList);
+
+    try {
+        for (const chunk of instrumentChunks) {
+            await fetchData(chunk); // Wait for each chunk to be processed
+        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+    }
+}
+
+// For loading all data
+document.getElementById('loadIndexUndlerlyingPairsButton').addEventListener('click', async () => {
+    const indexUnderlyingPairs = await fetchAllIndexUnderlyingPairs();
+    const tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = ''; // Clear the table
+    loadData(indexUnderlyingPairs);
+});
+
+// For loading user data
+document.getElementById('loadUserPairsButton').addEventListener('click', () => {
+    const userInput = document.getElementById('instrumentsInput').value;
+    const userInstruments = userInput ? userInput.split(',').map(instr => instr.trim()) : [];
+    const tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = ''; // Clear the table
+    loadData(userInstruments);
+});
 
 function getRelativeTime(timestamp) {
     const tradeDate = new Date(timestamp * 1000);
