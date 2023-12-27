@@ -15,7 +15,8 @@ async function getExchangesWithGrades(grades) {
         "bithumbglobal",
         "btse",
         "bitbuy",
-        "crosstower"
+        "crosstower",
+        "bittrex"
     ];
     const shouldExclude = document.getElementById('excludeToggle').checked;
 
