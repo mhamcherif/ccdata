@@ -1,44 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>TSE Tools</title>
-    <!-- Add Bootstrap CSS file -->
+    <title>Mansour's Tools</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom CSS for Dark Theme -->
+    <style>
+        body {
+            background-color: #0C1B37;
+            color: #D4D7E0;
+        }
+
+        .jumbotron {
+            background-color: #186AED;
+        }
+
+        a,
+        a:hover {
+            color: #0d6efd;
+        }
+
+        .footer {
+            background-color: #0C1B37;
+            color: #D4D7E0;
+            padding: 10px 0;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Welcome to Mansour's Tools!</h1>
-            <!-- API Key Input -->
-            <div class="mb-3">
-                <label for="apiKeyInput" class="form-label">API Key:</label>
-                <input type="password" class="form-control" id="apiKeyInput" placeholder="Enter API Key">
+    <div class="container mt-5">
+        <div class="jumbotron text-white">
+            <h1 style="font-size:60px; text-align: center;">Welcome to Mansour's Tools!</h1>
+            <br>
+            <div class="form-group row">
+                <label for="apiKeyInput" class="col-sm-2 col-form-label">Enter API Key:</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="apiKeyInput" placeholder="API Key">
+                </div>
             </div>
             <ul class="list-group">
-                <li class="list-group-item"><a href="monitors.html">Monitors</a></li>
-                <li class="list-group-item"><a href="cccagg_checker.html">CCCAGG Checker</a></li>
-                <li class="list-group-item"><a href="exchange_snapshot.html">Ticks Snaptshot</a></li>
-                <li class="list-group-item"><a href="exchange_trading_status.html">Exchange Health</a></li>
+                <li class="list-group-item bg-dark"><a href="monitors.html">Monitors</a></li>
+                <li class="list-group-item bg-dark"><a href="cccagg_checker.html">CCCAGG Checker</a></li>
+                <li class="list-group-item bg-dark"><a href="exchange_snapshot.html">Ticks Snapshot</a></li>
+                <li class="list-group-item bg-dark"><a href="exchange_trading_status.html">Exchange Health</a></li>
+                <li class="list-group-item bg-dark"><a href="ccix_health.html">CCIX Health</a></li>
+                <!-- <li class="list-group-item bg-dark"><a href="ccix_index_composition.html">CCIX Composition</a></li> -->
             </ul>
         </div>
     </div>
 
-    <!-- Footer Section -->
-    <footer class="footer">
+    <footer class="footer text-center">
         <div class="container">
-            <p class="text-center">
-                Contact us at <a href="mailto:mhamcherif@ccdata.io">mhamcherif@ccdata.io</a>
-            </p>
+            Contact us at <a href="mailto:mhamcherif@ccdata.io">mhamcherif@ccdata.io</a>
         </div>
     </footer>
 
-    <!-- Add Bootstrap JS file -->
+    <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -49,13 +72,29 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-    <!-- // Store API key in localStorage -->
     <script>
         document.getElementById('apiKeyInput').addEventListener('change', function () {
             localStorage.setItem('apiKey', this.value);
         });
     </script>
-
+    <!-- CCData widgets -->
+    <script type="text/javascript">
+        baseUrl = "https://widgets.cryptocompare.com/";
+        var scripts = document.getElementsByTagName("script");
+        var embedder = scripts[scripts.length - 1];
+        // Dark theme
+        var cccTheme = { "General": { "background": "#0C1B37", "priceText": "#D4D7E0" }, "Currency": { "color": "#D4D7E0" } };
+        (function () {
+            var appName = encodeURIComponent(window.location.hostname);
+            if (appName == "") { appName = "local"; }
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            var theUrl = baseUrl + 'serve/v1/coin/chartscroller?fsyms=BTC,ETH,SOL,LINK,XRP,DOGE,AVAX,RNDR,YFI,FET,MATIC,TIA,ADA,AIOZ,SHIB,LTC,IMX,XLM,DOT,ATOM,EOS,AAVE&tsyms=USD';
+            s.src = theUrl + (theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+            embedder.parentNode.appendChild(s);
+        })();
+    </script>
 </body>
 
 </html>

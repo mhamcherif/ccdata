@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCIX Health</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* Additional styles if needed */
+        .clickable {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2>CCIX Health</h2>
+        <div class="auto-refresh">
+            Auto-refresh:
+            <select id="refreshSelect" class="custom-select w-auto">
+                <option value="0">Off</option>
+                <option value="300000">5 min</option>
+                <option value="900000">15 min</option>
+            </select>
+        </div>
+        <input type="text" id="instrumentsInput" placeholder="Enter instruments (comma-separated)">
+        <button id="loadUserPairsButton">Load User Pairs</button>
+        <button id="loadIndexUndlerlyingPairsButton">Load Index Underlying Pairs</button>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Update Triggered By</th>
+                    <th>Last Update</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script/ccix_health.js"></script>
+</body>
+
+</html>
