@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set default: only few supported instruments currently.
             document.getElementById('instrumentsInput').value = "";
             document.getElementById('instrumentsInput').value = "XRP-USD,USDT-USD,USDC-USD,BUSD-USDT,BUSD-USD"
-        } else if (selectedMarket === 'ccxrpprep') {
+        } else if (selectedMarket === 'ccxrpperp') {
             // Set default: only XRP-USD supported currently.
             document.getElementById('instrumentsInput').value = "";
             document.getElementById('instrumentsInput').value = "XRP-USD";
