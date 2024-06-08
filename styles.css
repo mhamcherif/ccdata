@@ -1,3 +1,17 @@
+/* body {
+    background-color: #00D665;
+}
+
+table,
+td,
+th {
+    border: 1px solid;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+} */
 body {
     background-color: #00D665;
 }
@@ -11,4 +25,25 @@ th {
 table {
     width: 100%;
     border-collapse: collapse;
+}
+
+.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.table {
+    table-layout: fixed;
+}
+
+.price-column {
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace;
+    padding-right: 20px;
+    white-space: nowrap;
+}
+
+.price-column::after {
+    content: ".";
+    visibility: hidden;
 }
