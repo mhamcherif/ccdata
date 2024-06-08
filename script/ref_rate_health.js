@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (selectedMarket === 'ccxrp') {
             // Set default: only few supported instruments currently.
+            document.getElementById('instrumentsInput').value = "";
             document.getElementById('instrumentsInput').value = "XRP-USD,USDT-USD,USDC-USD,BUSD-USDT,BUSD-USD"
         } else if (selectedMarket === 'ccxrpprep') {
             // Set default: only XRP-USD supported currently.
-            document.getElementById('instrumentsInput').value = "XRP-USD"
+            document.getElementById('instrumentsInput').value = "";
+            document.getElementById('instrumentsInput').value = "XRP-USD";
         }
 
     });
