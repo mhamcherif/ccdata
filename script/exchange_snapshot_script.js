@@ -35,7 +35,9 @@ function populateTable(data, statusMapping) {
         "destroy": true,
         "data": data.map(item => {
             const fields = item.split('~');
-            const instrumentKey = `${fields[2]}-${fields[3]}`;
+            const baseSymbol = fields[2];
+            const quoteSymbol = fields[3];
+            const instrumentKey = `${baseSymbol}-${quoteSymbol}`;
             const status = statusMapping[instrumentKey] || 'Unknown';
             const lastUpdateTS = parseInt(fields[6]) * 1000;
             const currentTime = new Date().getTime();
@@ -54,18 +56,18 @@ function populateTable(data, statusMapping) {
             }
             // Status Link to Tools
             if (status === 'RETIRED') {
-                statusLink = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/retired?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">RETIRED</a>`;
-                // Else check if status is ACTIVE and Last Update TS is over one month ago
+                statusLink = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/retired?market=${fields[1].toLowerCase()}&toBaseSymbol=${baseSymbol}&toQuoteSymbol=${quoteSymbol}&page=1" target="_blank">RETIRED</a>`;
             } else if (status === 'ACTIVE') {
-                statusLink = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?filterMarket=${fields[1].toLowerCase()}&filterMappedInstrumentId=${instrumentKey}&page=1" target="_blank">ACTIVE</a>`;
+                statusLink = `<a href="https://tools.cryptocompare.com/instrumentmap/spot/mapped?market=${fields[1].toLowerCase()}&toBaseSymbol=${baseSymbol}&toQuoteSymbol=${quoteSymbol}&page=1" target="_blank">ACTIVE</a>`;
             }
-            //
+
+
             instrument = `<a href="https://data-api.cryptocompare.com/spot/v1/latest/tick?market=${fields[1].toLowerCase()}&instruments=${instrumentKey}&apply_mapping=true&groups=ID,MAPPING,VALUE,LAST_UPDATE,LAST_PROCESSED,CURRENT_WEEK,CURRENT_MONTH" target="_blank">${instrumentKey}</a>`;
             return [
                 fields[1], // Market
                 instrument, // Mapped Instrument: Base-Quote = fields[2]-fields[3]
-                fields[2], // Base
-                fields[3], // Quote
+                baseSymbol, // Base
+                quoteSymbol, // Quote
                 fields[5], // Price
                 fields[7], // Last Trade Quantity
                 fields[6], // Last Update TS

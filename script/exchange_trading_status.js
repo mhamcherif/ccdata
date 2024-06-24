@@ -1,7 +1,26 @@
 async function getExchangesWithGrades(grades) {
     const url = "https://min-api.cryptocompare.com/data/exchanges/general";
     const exclusions_list = [
-        "yobit",
+        "cryptopia",
+        "bitbay",
+        "bitsquare",
+        "bleutrade",
+        "coindeal",
+        "aidosmarket",
+        "ddex",
+        "cryptocarbon",
+        "fcoin",
+        "liquid",
+        "blackturtle",
+        "alphaex",
+        "bgogo",
+        "crex24",
+        "decoin",
+        "aax",
+        "ftx",
+        "betconix",
+        "ftxus",
+        "tidefi",
         "therocktrading",
         "tokenomy",
         "bkex",
@@ -13,10 +32,14 @@ async function getExchangesWithGrades(grades) {
         "etoro",
         "bitfex",
         "bithumbglobal",
-        "btse",
         "bitbuy",
         "crosstower",
-        "bittrex"
+        "bittrex",
+        "erisx",
+        "coss",
+        "ataix",
+        "bitforex",
+        "bitpanda"
     ];
     const shouldExclude = document.getElementById('excludeToggle').checked;
 
@@ -158,11 +181,14 @@ function getBadgeClass(differenceInSeconds, grade) {
         // ------------------------ Third Tier [15-30] -------------------------------
         // 15 minutes for warning, 30 minutes for danger
         'C': { warning: 900, danger: 1800 },
-        // ------------------------- Lower Tier [20-60]-------------------------------
+        // ------------------------- Forth Tier [20-60]-------------------------------
         // 20 minutes for warning, 60 minutes for danger
         'D': { warning: 1200, danger: 3600 },
         'E': { warning: 1200, danger: 3600 },
         'F': { warning: 1200, danger: 3600 },
+        // ------------------------- Lower Tier [60-120]-------------------------------
+        // 20 minutes for warning, 60 minutes for danger
+        '-': { warning: 3600, danger: 7200 },
     };
 
     // Default threshold if grade not in the list -> 5 years for warning, 10 years for danger for no grade
